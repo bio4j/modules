@@ -24,5 +24,9 @@ case object doSomethingWithBio4j extends Bundle(bio4jTitanDBInstance) {
 
 In principle, this is all that's needed for a minimal reproducible deployment.
 
+## generating binaries - data import
 
+The simplest approach would be
 
+- create a bundle hierarchy for the data import process
+- make the **test** phase of the `data` bundles build depend and use that
