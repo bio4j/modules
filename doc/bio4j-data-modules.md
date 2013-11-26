@@ -39,7 +39,7 @@ case object Patents               extends Bundle()
 case object UnpublishedObservations extends Bundle()
 // Citation references (Articles, books, submissions...)
 case object Citations             extends Bundle(
-	                                          Articles                :~: 
+                                                  Articles                :~: 
                                                   OnlineArticles          :~: 
                                                   Thesis                  :~: 
                                                   Books                   :~: 
@@ -85,7 +85,7 @@ case object UniRef50              extends Bundle(SwissProt :~: TrEMBL)
 case object FullUniRef            extends Bundle(
                                                   UniRef50  :~:
                                                   UniRef90  :~:
-                                                  UniRef100 :~:
+                                                  UniRef100
                                                 )
 // the full thing?
 case object UniprotKB             extends Bundle(
