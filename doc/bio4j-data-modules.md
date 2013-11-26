@@ -38,17 +38,37 @@ case object Patents               extends Bundle()
 // Unpublished observation citations
 case object UnpublishedObservations extends Bundle()
 // Citation references (Articles, books, submissions...)
-case object Citations             extends Bundle(				Articles                :~: 
-	OnlineArticles          :~: 
-	Thesis                  :~: 
-	Books                   :~: 
-	Submissions             :~: 
-	Patents                 :~: 			UnpublishedObservations	                                                 )
+case object Citations             extends Bundle(
+	                                                Articles                :~: 
+                                                  OnlineArticles          :~: 
+                                                  Thesis                  :~: 
+                                                  Books                   :~: 
+                                                  Submissions             :~: 
+                                                  Patents                 :~: 			
+                                                  UnpublishedObservations
+                                                )
 // UniprotKB
 // are these dependencies real??
-case object SwissProt             extends Bundle(				GO               :~: 		ENZYME           :~: 			RefSeq           :~: 		Keywords         :~: 		Pfam             :~: 			Interpro         :~: 		Reactome         :~: 			Citations        :~:		GITaxonomyIndex	                                                 )
+case object SwissProt             extends Bundle(				
+                                                  GO               :~: 
+                                                  ENZYME           :~: 
+                                                  RefSeq           :~: 
+                                                  Keywords         :~: 
+                                                  Pfam             :~: 
+                                                  Interpro         :~: 
+                                                  Reactome         :~: 
+                                                  Citations        :~:		
+                                                  GITaxonomyIndex	
+                                                )
 
-case object TrEMBL                extends Bundle(				GO               :~: 		ENZYME           :~: 			RefSeq           :~: 		Keywords         :~: 		Pfam             :~: 			Interpro         :~: 		Reactome         :~: 			Citations        :~:		GITaxonomyIndex	                                                )
+case object TrEMBL                extends Bundle(				
+                                                  GO               :~: 		
+                                                  ENZYME           :~: 			
+                                                  RefSeq           :~: 		
+                                                  Keywords         :~: 		
+                                                  Pfam             :~: 			
+                                                  Interpro         :~: 		
+                                                  Reactome         :~: 			Citations        :~:		GITaxonomyIndex	                                                )
 // interactions
 case object SwissProtInteractions extends Bundle(SwissProt)
 case object TrEMBLInteractions    extends Bundle(TrEMBL)
