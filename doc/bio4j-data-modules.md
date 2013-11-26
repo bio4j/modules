@@ -39,7 +39,7 @@ case object Patents               extends Bundle()
 case object UnpublishedObservations extends Bundle()
 // Citation references (Articles, books, submissions...)
 case object Citations             extends Bundle(
-	                                                Articles                :~: 
+	                                          Articles                :~: 
                                                   OnlineArticles          :~: 
                                                   Thesis                  :~: 
                                                   Books                   :~: 
@@ -68,7 +68,10 @@ case object TrEMBL                extends Bundle(
                                                   Keywords         :~: 		
                                                   Pfam             :~: 			
                                                   Interpro         :~: 		
-                                                  Reactome         :~: 			Citations        :~:		GITaxonomyIndex	                                                )
+                                                  Reactome         :~: 			
+                                                  Citations        :~:		
+                                                  GITaxonomyIndex	                                                
+                                                )
 // interactions
 case object SwissProtInteractions extends Bundle(SwissProt)
 case object TrEMBLInteractions    extends Bundle(TrEMBL)
@@ -90,7 +93,8 @@ case object UniprotKB             extends Bundle(
                                                   SwissProtIsoforms     :~:
                                                   SwissProtInteractions :~:
                                                   TrEMBL                :~:
-                                                  TrEMBLInteractions    :~:			TrEMBLIsoforms
+                                                  TrEMBLInteractions    :~:			
+                                                  TrEMBLIsoforms
                                                 )
 // all data?
 case object FullBio4j             extends Bundle(
@@ -99,7 +103,7 @@ case object FullBio4j             extends Bundle(
                                                   NCBITaxonomy  :~:
                                                   ENZYME        :~:
                                                   UniprotKB     :~:
-                                                  FullUniRef    :~:
+                                                  FullUniRef
                                                 )
 ```
 
