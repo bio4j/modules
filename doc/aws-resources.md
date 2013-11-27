@@ -17,7 +17,7 @@ We will separate downloading raw data from the original sources and putting it i
 
 ### imported db binaries
 
-It is not so easy to determine where to put them; we need to measure how long it would take to download them from S3; possibly split them into several objects is a good idea.
+It is not so easy to determine where to put them; we need to measure how long it would take to download them from S3; possibly split them into several objects is a good idea; or just push them in parallel: see [pushing the limits of S3 upload performance](http://improve.dk/pushing-the-limits-of-amazon-s3-upload-performance/). According to that, we could get close to `1GB/s`.
 
 If possible, I want to avoid EBS.
 
@@ -33,3 +33,10 @@ We will use instance store here, so we need to get the db binaries from somewher
 
 1. get them from S3 (multipart, several objects, ...)
 2. instantiate volume from snapshot, copy to instance store, delete volume. Ugly and dangerous
+
+#### integrity checks
+
+This is a bit tricky with multipart upload/download in general. However, as in our case we are downloading the files either way we should
+
+1. when uploading to S3 the binary data, upload its md5 (as object metadata)
+2. when downloading from S3, compute it locally after download and check
