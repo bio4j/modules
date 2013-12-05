@@ -15,7 +15,6 @@ trait AnyDataImporterBundle extends AnyBundle
 
 /* Constructor: */
 abstract class DataImporterBundle[
-  // APIs <: TypeSet: boundedBy[AnyAPIBundle]#is,
   RD   <: AnyRawDataBundle, 
   API  <: AnyAPIBundle, 
   T    <: HList: towerFor[RD :~: API :~: ∅]#is
