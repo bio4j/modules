@@ -14,6 +14,6 @@ trait AnyAPIBundle extends AnyBundle
 
 /* Constructor: */
 abstract class APIBundle[
-  D <: TypeSet : boundedBy[AnyAPIBundle]#is, 
-  T <: HList   : towerFor[D]#is
+  D <: TypeSet: boundedBy[AnyAPIBundle]#is, 
+  T <: HList:   towerFor[D]#is
 ](deps: D = ∅) extends Bundle[D,T](deps) with AnyAPIBundle
