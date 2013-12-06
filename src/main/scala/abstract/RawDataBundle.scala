@@ -6,7 +6,9 @@ This bundle just downloads raw data files and unpacks them if needed.
 package ohnosequences.bio4j.bundles
 
 import ohnosequences.statika._
-import java.io._
+import java.net.URL
+import java.io.File
+import sys.process._
 
 /* Abstract interface: */
 trait AnyRawDataBundle extends AnyBundle
@@ -17,20 +19,25 @@ abstract class RawDataBundle(val url: String)
 
     val archive: String = url.split("/").last
 
-    val unpack: (String, InstallResults) = 
-      Map[String, InstallResults](
-        ".tar.gz" -> Seq("tar", "-xvf", archive),
+    val archType: Option[(String, Seq[String])] = Map(
+        ".tar.gz" -> Seq("tar", "xvf", archive),
         ".gz" -> Seq("gunzip", archive)
-      ).find{ case (ext, cmd) => archive.endsWith(ext) }.
-        getOrElse("" -> success("Not an archive"))
+      ).find{ case (ext, cmd) => archive.endsWith(ext) }
 
     /* This value provides the link to the data useful for other bundles */
-    val dataFile: File = new File(archive.stripSuffix(unpack._1))
+    val dataFolder: File = new File(archive.stripSuffix(archType.map(_._1).getOrElse("")))
+
+    def pathOf(name: String): String = new File(dataFolder, name).getAbsolutePath
 
     override def install[D <: AnyDistribution](d: D): InstallResults = {
-      Seq("curl", url, "-o", archive) -&-
-      unpack._2 ->-
-      success(s"${url} is downloaded and unpacked to ${dataFile}")
+      if (!dataFolder.exists) dataFolder.mkdirs
+      
+      Seq("curl", url, "-o", archive) @@ dataFolder -&-
+      (archType match { 
+         case Some((ext, cmd)) => runCommand(cmd @@ dataFolder)()
+         case _ => success("Not an archive")
+      }) ->-
+      success(s"${url} is downloaded and unpacked to ${dataFolder}")
     }
 
 }

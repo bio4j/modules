@@ -9,21 +9,44 @@ import shapeless._
 import ohnosequences.typesets._
 import ohnosequences.statika._
 import java.io._
+import scala.collection.JavaConversions._
+
+import com.era7.bioinfo.bioinfoutil.Executable
 
 /* Abstract interface: */
-trait AnyDataImporterBundle extends AnyBundle
+trait AnyDataImporterBundle extends AnyBundle {
+  type RawData <: AnyRawDataBundle
+  val rawData: RawData
+
+  type API  <: AnyAPIBundle
+  val api: API
+
+  type Importer <: Executable
+  val importer: Importer
+
+  // Arguments for the importer program
+  val args: Seq[String]
+}
 
 /* Constructor: */
 abstract class DataImporterBundle[
-  RD   <: AnyRawDataBundle, 
-  API  <: AnyAPIBundle, 
-  T    <: HList: towerFor[RD :~: API :~: ∅]#is
-](val rawData: RD, val api: API) 
-  extends Bundle[RD :~: API :~: ∅, T](rawData :~: api :~: ∅) with AnyDataImporterBundle {
+  D <: AnyRawDataBundle, 
+  A <: AnyAPIBundle, 
+  T <: HList: towerFor[D :~: A :~: ∅]#is,
+  I <: Executable
+](val rawData: D, val api: A)(val importer: I) 
+  extends Bundle[D :~: A :~: ∅, T](rawData :~: api :~: ∅) with AnyDataImporterBundle {
+    type RawData = D 
+    type API = A
+    type Importer = I
 
     override def install[D <: AnyDistribution](d: D): InstallResults = {
-      // TODO: import data
-      success("Data is imported")
+      try { 
+        importer.execute(new java.util.ArrayList(args))
+        success(s"Data for ${name} is imported")
+      } catch {
+        case e: Exception => failure(e.toString)
+      }
     }
 
 }

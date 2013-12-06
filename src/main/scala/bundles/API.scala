@@ -7,6 +7,7 @@ object API {
 
   // Taxonomy
   case object NCBITaxonomy    extends APIBundle
+/*
   case object GITaxonomyIndex extends APIBundle(NCBITaxonomy :~: ∅)
   // RefSeq
   case object RefSeq          extends APIBundle()
@@ -110,5 +111,6 @@ object API {
     FullUniRef    :~:
     ∅
   )
+*/
 
 }

@@ -6,6 +6,7 @@ object RawData {
 
   case object NCBITaxonomy extends RawDataBundle("ftp://ftp.ncbi.nih.gov/pub/taxonomy/taxdump.tar.gz")
 
+/*
   case object UniprotSprot extends RawDataBundle("ftp://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/complete/uniprot_sprot.xml.gz")
 
   case object UniprotTrembl extends RawDataBundle("ftp://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/complete/uniprot_trembl.xml.gz")
@@ -25,16 +26,16 @@ object RawData {
   case object ENZYME extends RawDataBundle("ftp://ftp.expasy.org/databases/enzyme/enzyme.dat")
 
   case object RefSeq extends RawDataBundle("ftp://ftp.ncbi.nih.gov/refseq/release/complete/*.gbff.gz") {
-    val dataFolder = new java.io.File("refseq_data")
-
-    override val dataFile = dataFolder
+    override val dataFolder = new java.io.File("refseq_data")
 
     override def install[D <: AnyDistribution](d: D): InstallResults = {
       if (!dataFolder.exists) dataFolder.mkdirs
 
       Seq("wget", url) @@ dataFolder -&-
       "gunzip *.gz" @@ dataFolder ->-
-      success(s"${url} is downloaded and unpacked to ${dataFile}")
+      success(s"${url} is downloaded and unpacked to ${dataFolder}")
     }
   }
+*/*/
+
 }
