@@ -34,10 +34,11 @@ trait AnyModuleBundle extends AnyBundle {
 abstract class ModuleBundle[
   D <: AnyRawDataBundle, 
   A <: AnyAPIBundle, 
-  T <: HList: towerFor[D :~: A :~: ∅]#is,
+  B <: Bio4jInstanceBundle,
+  T <: HList: towerFor[B :~: D :~: A :~: ∅]#is,
   I <: Executable
-](val rawData: D, val api: A, val importer: I) 
-  extends Bundle[D :~: A :~: ∅, T](rawData :~: api :~: ∅) with AnyModuleBundle {
+](val initDB: B, val rawData: D, val api: A, val importer: I) 
+  extends Bundle[B :~: D :~: A :~: ∅, T](initDB :~: rawData :~: api :~: ∅) with AnyModuleBundle {
     type RawData = D 
     type API = A
     type Importer = I
@@ -45,7 +46,7 @@ abstract class ModuleBundle[
     override def install[D <: AnyDistribution](d: D): InstallResults = {
       try { 
         importer.execute(new java.util.ArrayList(args))
-        success(s"Data for ${name} is imported")
+        success(s"Data for the ${name} module is imported")
       } catch {
         case e: Exception => failure(e.toString)
       }

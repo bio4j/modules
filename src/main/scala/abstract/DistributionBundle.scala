@@ -10,4 +10,4 @@ import ohnosequences.typesets._
 import ohnosequences.statika._
 import java.io._
 
-// TODO: (scoobi)doobidoobidoo
+// TODO: a bundle with a link to the deployed `ReleaseBundle` in S3 may be with some API

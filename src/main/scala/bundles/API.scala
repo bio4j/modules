@@ -7,6 +7,8 @@ object API {
 
   // Taxonomy
   case object NCBITaxonomy    extends APIBundle
+
+  // TODO: uncomment and match the names and structure with modules/data/etc.
 /*
   case object GITaxonomyIndex extends APIBundle(NCBITaxonomy :~: ∅)
   // RefSeq

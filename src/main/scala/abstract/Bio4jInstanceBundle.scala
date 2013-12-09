@@ -12,11 +12,14 @@ import ohnosequences.statika._
 import java.io._
 import scala.collection.JavaConversions._
 
-import com.era7.bioinfo.bioinfoutil.Executable
+import com.era7.bioinfo.bio4j.titan.programs.InitBio4jTitan
 
-/* Abstract interface: */
-// trait AnyBio4jInstanceBundle extends AnyBundle {
-// }
+abstract class Bio4jInstanceBundle(val folder: File) extends Bundle() {
 
-/* Constructor: */
-// abstract class Bio4jInstanceBundle[
+  override def install[D <: AnyDistribution](d: D): InstallResults = {
+    if (!folder.exists) folder.mkdirs
+    InitBio4jTitan.main(Array(folder.getAbsolutePath))
+    success(s"Initialized Bio4j DB in ${folder}")
+  }
+
+}

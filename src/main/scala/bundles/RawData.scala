@@ -6,6 +6,7 @@ object RawData {
 
   case object NCBITaxonomy extends RawDataBundle("ftp://ftp.ncbi.nih.gov/pub/taxonomy/taxdump.tar.gz")
 
+  // TODO: uncomment
 /*
   case object UniprotSprot extends RawDataBundle("ftp://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/complete/uniprot_sprot.xml.gz")
 
