@@ -1,6 +1,7 @@
-/* ### Data importer bundle
+/* ### Bio4j module bundle
 
-This bundle uploads data to S3 bucket and provides a link to the object.
+This bundle represents a module of Bio4j DB. A distribution of Bio4j should depend on a number of 
+such modules and that will define which data will be imported to the DB.
 */
 
 package ohnosequences.bio4j.bundles
@@ -14,13 +15,14 @@ import scala.collection.JavaConversions._
 import com.era7.bioinfo.bioinfoutil.Executable
 
 /* Abstract interface: */
-trait AnyDataImporterBundle extends AnyBundle {
+trait AnyModuleBundle extends AnyBundle {
   type RawData <: AnyRawDataBundle
   val rawData: RawData
 
   type API  <: AnyAPIBundle
   val api: API
 
+  // TODO: create a bundle representing importer with an HList record of required args
   type Importer <: Executable
   val importer: Importer
 
@@ -29,13 +31,13 @@ trait AnyDataImporterBundle extends AnyBundle {
 }
 
 /* Constructor: */
-abstract class DataImporterBundle[
+abstract class ModuleBundle[
   D <: AnyRawDataBundle, 
   A <: AnyAPIBundle, 
   T <: HList: towerFor[D :~: A :~: ∅]#is,
   I <: Executable
-](val rawData: D, val api: A)(val importer: I) 
-  extends Bundle[D :~: A :~: ∅, T](rawData :~: api :~: ∅) with AnyDataImporterBundle {
+](val rawData: D, val api: A, val importer: I) 
+  extends Bundle[D :~: A :~: ∅, T](rawData :~: api :~: ∅) with AnyModuleBundle {
     type RawData = D 
     type API = A
     type Importer = I

@@ -5,7 +5,7 @@ import ohnosequences.statika._
 
 object Release {
 
-  case object TaxonomyBio4j extends ReleaseBundle(DataImporter.NCBITaxonomy :~: ∅)
+  case object TaxonomyBio4j extends ReleaseBundle(Module.NCBITaxonomy :~: ∅)
 
   // TODO: more releases
 
