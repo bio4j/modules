@@ -12,9 +12,9 @@ import ohnosequences.statika._
 import java.io._
 import scala.collection.JavaConversions._
 
-import com.era7.bioinfo.bio4j.titan.programs.InitBio4jTitan
-
 abstract class Bio4jInstanceBundle(val folder: File) extends Bundle() {
+
+  import com.era7.bioinfo.bio4j.titan.programs.InitBio4jTitan
 
   override def install[D <: AnyDistribution](d: D): InstallResults = {
     if (!folder.exists) folder.mkdirs

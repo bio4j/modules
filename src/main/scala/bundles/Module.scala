@@ -4,25 +4,11 @@ import ohnosequences.statika._
 import com.era7.bioinfo.bio4j.titan.programs._
 import java.io._
 
-case object InitialBio4j extends Bio4jInstanceBundle(new File("bio4jtitandb"))
+case object InitialBio4j extends Bio4jInstanceBundle(new File("/media/ephemeral0/bio4jtitandb"))
 
 object Module {
 
-  case object NCBITaxonomy
-    extends ModuleBundle(
-      initDB = InitialBio4j, 
-      rawData = RawData.NCBITaxonomy, 
-      api = API.NCBITaxonomy, 
-      importer = new ImportNCBITaxonomyTitan()
-    ) {
-      val args = Seq(
-        rawData.pathOf("nodes.dmp"),   // 1. Nodes DMP filename
-        rawData.pathOf("names.dmp"),   // 2. Names DMP filename
-        rawData.pathOf("merged.dmp"),  // 3. Merged DMP filename
-        initDB.folder.getAbsolutePath, // 4. Bio4j DB folder
-        "true"                         // 5. Associate Uniprot taxonomy (true/false)
-      )
-    }
+  case object NCBITaxonomy extends ModuleBundle(API.NCBITaxonomy, Data.NCBITaxonomy)
 
   // TODO: finish other modules
 

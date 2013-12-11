@@ -27,7 +27,7 @@ abstract class RawDataBundle(val url: String)
     /* This value provides the link to the data useful for other bundles */
     val dataFolder: File = new File(archive.stripSuffix(archType.map(_._1).getOrElse("")))
 
-    def pathOf(name: String): String = new File(dataFolder, name).getAbsolutePath
+    def inDataFolder(name: String): File = new File(dataFolder, name)
 
     override def install[D <: AnyDistribution](d: D): InstallResults = {
       if (!dataFolder.exists) dataFolder.mkdirs
