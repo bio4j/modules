@@ -1,5 +1,7 @@
 Nice.scalaProject
 
+Nice.fatArtifactSettings
+
 name := "bio4j-scala"
 
 description := "bio4j-scala project"
@@ -10,8 +12,5 @@ bucketSuffix := "era7.com"
 
 libraryDependencies ++= Seq(
   "ohnosequences" %% "statika" % "1.0.0",
-  "ohnosequences" % "bio4j-titandb" % "0.1.0",
-  "ohnosequences" % "bioinfo-util" % "1.2.0"
+  "ohnosequences" % "bio4j-titandb" % "0.2.0-SNAPSHOT" classifier "fat" intransitive()
 )
-
-dependencyOverrides += "commons-codec" % "commons-codec" % "1.7"
