@@ -16,8 +16,13 @@ import com.era7.bioinfo.bioinfoutil.Executable
 
 
 /* A cover for an importing program from bio4j-titandb */
-class ImporterProgram(val program: Executable, val args: Seq[String]) {
-  def execute(): Unit = program.execute(new java.util.ArrayList(args))
+trait AnyImporterProgram {
+  def execute(): Unit
+}
+
+abstract class ImporterProgram(val program: Executable, val args: Seq[String]) 
+    extends AnyImporterProgram {
+      def execute(): Unit = program.execute(new java.util.ArrayList(args))
 }
 
 /* Abstract interface: */
@@ -31,7 +36,7 @@ trait AnyImporterBundle extends AnyBundle {
   val  rawData: RawData
 
   /* - How to import */
-  val  program: ImporterProgram
+  val  program: AnyImporterProgram
 }
 
 /* Constructor: */

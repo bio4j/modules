@@ -21,7 +21,9 @@ abstract class ReleaseBundle[
   T <: HList: towerFor[D]#is
 ](deps: D) extends Bundle[D, T](deps) with AnyReleaseBundle {
 
-    override def install[D <: AnyDistribution](d: D): InstallResults =
+    override def install[D <: AnyDistribution](d: D): InstallResults = {
+      // TODO: upload everything to S3
       success("All modules are imported")
+    }
 
 }

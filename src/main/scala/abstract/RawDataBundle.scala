@@ -16,7 +16,7 @@ trait AnyRawDataBundle extends AnyBundle {
   val dataFolder: File
 
   /* - A constructor for relative file paths: */
-  def inDataFolder(name: String): File
+  def inDataFolder(name: String): File = new File(dataFolder, name)
 }
 
 /* Constructor: */
@@ -31,8 +31,6 @@ abstract class RawDataBundle(val url: String)
       ).find{ case (ext, cmd) => archive.endsWith(ext) }
 
     val dataFolder: File = new File(archive.stripSuffix(archType.map(_._1).getOrElse("")))
-
-    def inDataFolder(name: String): File = new File(dataFolder, name)
 
     override def install[D <: AnyDistribution](d: D): InstallResults = {
       if (!dataFolder.exists) dataFolder.mkdirs
