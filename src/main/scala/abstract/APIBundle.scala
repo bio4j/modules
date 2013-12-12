@@ -1,6 +1,6 @@
 /* ### Module API bundle
 
-This bundle describes generic API for Bio4j module bundles
+This bundle describes generic API for Bio4j modules
 */
 
 package ohnosequences.bio4j.bundles
@@ -15,5 +15,5 @@ trait AnyAPIBundle extends AnyBundle
 /* Constructor: */
 abstract class APIBundle[
   D <: TypeSet: boundedBy[AnyAPIBundle]#is, 
-  T <: HList:   towerFor[D]#is
-](deps: D = ∅) extends Bundle[D,T](deps) with AnyAPIBundle
+  T <: HList: towerFor[D]#is
+](deps: D = ∅) extends Bundle[D, T](deps) with AnyAPIBundle

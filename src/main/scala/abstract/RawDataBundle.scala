@@ -11,7 +11,13 @@ import java.io.File
 import sys.process._
 
 /* Abstract interface: */
-trait AnyRawDataBundle extends AnyBundle
+trait AnyRawDataBundle extends AnyBundle {
+  /* - Where the unpacked data is located: */
+  val dataFolder: File
+
+  /* - A constructor for relative file paths: */
+  def inDataFolder(name: String): File
+}
 
 /* Constructor: */
 abstract class RawDataBundle(val url: String) 
@@ -24,7 +30,6 @@ abstract class RawDataBundle(val url: String)
         ".gz" -> Seq("gunzip", archive)
       ).find{ case (ext, cmd) => archive.endsWith(ext) }
 
-    /* This value provides the link to the data useful for other bundles */
     val dataFolder: File = new File(archive.stripSuffix(archType.map(_._1).getOrElse("")))
 
     def inDataFolder(name: String): File = new File(dataFolder, name)

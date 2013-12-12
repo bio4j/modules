@@ -12,24 +12,35 @@ import ohnosequences.statika._
 import java.io._
 
 /* Abstract interface: */
-trait AnyModuleBundle extends AnyBundle {
+trait AnyModuleBundle extends AnyBio4jInstanceBundle {
+  /* - Corresponding API of the module (it has it's own dependencies) */
   type API  <: AnyAPIBundle
   val  api: API
 
-  type Data <: AnyDataBundle
-  val  data: Data
+  /* - Corresponding data importer bundle */
+  type Importer <: AnyImporterBundle
+  val  importer: Importer
+
+  /* - Dependencies on other modules */
+  type ModuleDeps <: TypeSet
+  val  moduleDeps: ModuleDeps
+
+  /* By the way, module is an instance of Bio4j, and knows where it is located */
+  val dbLocation = importer.initDB.dbLocation
 }
 
 /* Constructor: */
 abstract class ModuleBundle[
    A <: AnyAPIBundle, 
-   D <: AnyDataBundle, 
-  // Ms <: TypeSet: boundedBy[AnyModuleBundle]#is
-   T <: HList: towerFor[A :~: D :~: ∅]#is
-](val api: A, val data: D) 
-  extends Bundle[A :~: D :~: ∅, T](api :~: data :~: ∅) with AnyModuleBundle {
+   I <: AnyImporterBundle, 
+  Ms <: TypeSet: boundedBy[AnyBio4jInstanceBundle]#is,
+   T <: HList: towerFor[A :~: I :~: Ms]#is
+](val api: A, val importer: I)(val moduleDeps: Ms = ∅)
+ (implicit boundEvidence: ofBundles[A :~: I :~: Ms]) // stupid check
+  extends Bundle[A :~: I :~: Ms, T](api :~: importer :~: moduleDeps) with AnyModuleBundle {
 
     type API = A
-    type Data = D
+    type Importer = I
+    type ModuleDeps = Ms
 
 }

@@ -1,5 +1,6 @@
 package ohnosequences.bio4j.bundles
 
+import ohnosequences.typesets._
 import ohnosequences.statika._
 import com.era7.bioinfo.bio4j.titan.programs._
 import java.io._
@@ -8,7 +9,7 @@ case object InitialBio4j extends Bio4jInstanceBundle(new File("/media/ephemeral0
 
 object Module {
 
-  case object NCBITaxonomy extends ModuleBundle(API.NCBITaxonomy, Data.NCBITaxonomy)
+  case object NCBITaxonomy extends ModuleBundle(API.NCBITaxonomy, Importer.NCBITaxonomy)()
 
   // TODO: finish other modules
 
