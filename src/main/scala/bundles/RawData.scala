@@ -12,15 +12,15 @@ object RawData {
   case object GITaxonomyIndex extends RawDataBundle("ftp://ftp.ncbi.nih.gov/pub/taxonomy/gi_taxid_nucl.dmp.gz")
 
 
-  case object UniprotSprot 
+  case object UniprotSwissProt
     extends RawDataBundle("ftp://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/complete/uniprot_sprot.xml.gz"){
       override val dataFolder: File = new File("uniprot")
   }
-  case object UniprotTrembl 
+  case object UniprotTrEMBL 
     extends RawDataBundle("ftp://ftp.uniprot.org/pub/databases/uniprot/current_release/knowledgebase/complete/uniprot_trembl.xml.gz"){
       override val dataFolder: File = new File("uniprot")
   }
-  case object Uniprot extends Bundle(UniprotSprot :~: UniprotTrembl :~: ∅) with AnyRawDataBundle {
+  case object UniprotKB extends Bundle(UniprotSwissProt :~: UniprotTrEMBL :~: ∅) with AnyRawDataBundle {
     override val dataFolder: File = new File("uniprot")
 
     // We need to add an xml config file
@@ -49,7 +49,7 @@ object RawData {
       val file = "uniprotData.xml"
 
       (Seq("echo", config) #> new File(file)) ->-
-      success(s"Uniprot configuration was saved to ${file}")
+      success(s"UniprotKB configuration was saved to ${file}")
     }
   }
 
@@ -59,16 +59,16 @@ object RawData {
   }
 
 
-  case object Uniref100 extends RawDataBundle("ftp://ftp.uniprot.org/pub/databases/uniprot/uniref/uniref100/uniref100.xml.gz") {
+  case object UniRef100 extends RawDataBundle("ftp://ftp.uniprot.org/pub/databases/uniprot/uniref/uniref100/uniref100.xml.gz") {
     override val dataFolder: File = new File("uniref")
   }
-  case object Uniref90 extends RawDataBundle("ftp://ftp.uniprot.org/pub/databases/uniprot/uniref/uniref90/uniref90.xml.gz") {
+  case object UniRef90 extends RawDataBundle("ftp://ftp.uniprot.org/pub/databases/uniprot/uniref/uniref90/uniref90.xml.gz") {
     override val dataFolder: File = new File("uniref")
   }
-  case object Uniref50 extends RawDataBundle("ftp://ftp.uniprot.org/pub/databases/uniprot/uniref/uniref50/uniref50.xml.gz") {
+  case object UniRef50 extends RawDataBundle("ftp://ftp.uniprot.org/pub/databases/uniprot/uniref/uniref50/uniref50.xml.gz") {
     override val dataFolder: File = new File("uniref")
   }
-  case object Uniref extends Bundle(Uniref100 :~: Uniref90 :~: Uniref50 :~: ∅) with AnyRawDataBundle {
+  case object UniRef extends Bundle(UniRef100 :~: UniRef90 :~: UniRef50 :~: ∅) with AnyRawDataBundle {
     override val dataFolder: File = new File("uniref")
   }
 

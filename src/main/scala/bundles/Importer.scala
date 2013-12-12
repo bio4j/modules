@@ -6,6 +6,8 @@ import ohnosequences.statika._
 import com.era7.bioinfo.bio4j.titan.programs._
 import java.io._
 
+case object InitialBio4j extends Bio4jInstanceBundle(new File("/media/ephemeral0/bio4jtitandb"))
+
 object Importer {
 
   case object NCBITaxonomy extends ImporterBundle(InitialBio4j, RawData.NCBITaxonomy) {
@@ -46,8 +48,8 @@ object Importer {
     )
   }
 
-  case object Uniref extends ImporterBundle(InitialBio4j, RawData.Uniref) {
-    val program = Program.Uniref(
+  case object UniRef extends ImporterBundle(InitialBio4j, RawData.UniRef) {
+    val program = Program.UniRef(
       data100 = rawData.inDataFolder("uniref100.xml"),
       data90  = rawData.inDataFolder("uniref90.xml"),
       data50  = rawData.inDataFolder("uniref50.xml"),
@@ -55,8 +57,8 @@ object Importer {
     )
   }
 
-  case object Uniprot extends ImporterBundle(InitialBio4j, RawData.Uniprot) {
-    val program = Program.Uniprot(
+  case object UniprotKB extends ImporterBundle(InitialBio4j, RawData.UniprotKB) {
+    val program = Program.UniprotKB(
       sprot  = rawData.inDataFolder("uniprot_sprot.xml"),
       trembl = rawData.inDataFolder("uniprot_trembl.xml"),
       db     = initDB.dbLocation,
@@ -64,7 +66,7 @@ object Importer {
     )
   }
 
-  case object ProteinInteractions extends ImporterBundle(InitialBio4j, RawData.Uniprot) {
+  case object ProteinInteractions extends ImporterBundle(InitialBio4j, RawData.UniprotKB) {
     val program = Program.ProteinInteractions(
       sprot  = rawData.inDataFolder("uniprot_sprot.xml"),
       trembl = rawData.inDataFolder("uniprot_trembl.xml"),

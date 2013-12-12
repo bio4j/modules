@@ -8,15 +8,13 @@ object API {
   // Taxonomy
   case object NCBITaxonomy    extends APIBundle
 
-  // TODO: uncomment and match the names and structure with modules/data/etc.
-/*
   case object GITaxonomyIndex extends APIBundle(NCBITaxonomy :~: ∅)
   // RefSeq
   case object RefSeq          extends APIBundle()
   // Gene Ontology
-  case object GO              extends APIBundle()
+  case object GeneOntology    extends APIBundle()
   // Expasy EnzymeDB
-  case object ENZYME          extends APIBundle()
+  case object EnzymeDB        extends APIBundle()
   // Keywords
   case object Keywords        extends APIBundle()
   // Pfam
@@ -41,78 +39,88 @@ object API {
   case object UnpublishedObservations extends APIBundle()
   // Citation references (Articles, books, submissions...)
   case object Citations extends APIBundle(
-    Articles                :~: 
-    OnlineArticles          :~: 
-    Thesis                  :~: 
-    Books                   :~: 
-    Submissions             :~: 
-    Patents                 :~:       
+    Articles :~: 
+    OnlineArticles :~: 
+    Thesis :~: 
+    Books :~: 
+    Submissions :~: 
+    Patents :~:       
     UnpublishedObservations :~:
     ∅
   )
   // UniprotKB
   // are these dependencies real??
   case object SwissProt extends APIBundle(       
-    GO               :~: 
-    ENZYME           :~: 
-    RefSeq           :~: 
-    Keywords         :~: 
-    Pfam             :~: 
-    Interpro         :~: 
-    Reactome         :~: 
-    Citations        :~:    
-    GITaxonomyIndex  :~:
+    GeneOntology :~: 
+    EnzymeDB :~: 
+    RefSeq :~: 
+    Keywords :~: 
+    Pfam :~: 
+    Interpro :~: 
+    Reactome :~: 
+    Citations :~:    
+    GITaxonomyIndex :~:
     ∅
   )
 
   case object TrEMBL extends APIBundle(       
-    GO               :~:    
-    ENZYME           :~:      
-    RefSeq           :~:    
-    Keywords         :~:    
-    Pfam             :~:      
-    Interpro         :~:    
-    Reactome         :~:      
-    Citations        :~:    
-    GITaxonomyIndex  :~:
+    GeneOntology :~:    
+    EnzymeDB :~:      
+    RefSeq :~:    
+    Keywords :~:    
+    Pfam :~:      
+    Interpro :~:    
+    Reactome :~:      
+    Citations :~:    
+    GITaxonomyIndex :~:
     ∅
   )
   // interactions
   case object SwissProtInteractions extends APIBundle(SwissProt :~: ∅)
-  case object TrEMBLInteractions    extends APIBundle(TrEMBL    :~: ∅)
+  case object TrEMBLInteractions    extends APIBundle(TrEMBL :~: ∅)
+  case object ProteinInteractions   extends APIBundle(
+    SwissProtInteractions :~: 
+    TrEMBLInteractions :~: 
+    ∅
+  )
   // isoforms 
   case object SwissProtIsoforms extends APIBundle(SwissProt :~: ∅)
-  case object TrEMBLIsoforms    extends APIBundle(TrEMBL    :~: ∅)
+  case object TrEMBLIsoforms    extends APIBundle(TrEMBL :~: ∅)
+  case object IsoformSequences  extends APIBundle(
+    SwissProtIsoforms :~: 
+    TrEMBLIsoforms :~: 
+    ∅
+  )
   // UniRef stuff
   case object UniRef100  extends APIBundle(SwissProt :~: TrEMBL :~: ∅)
   case object UniRef90   extends APIBundle(SwissProt :~: TrEMBL :~: ∅)
   case object UniRef50   extends APIBundle(SwissProt :~: TrEMBL :~: ∅)
-  case object FullUniRef extends APIBundle(
-    UniRef50  :~:
-    UniRef90  :~:
+  case object UniRef     extends APIBundle(
+    UniRef50 :~:
+    UniRef90 :~:
     UniRef100 :~:
     ∅
   )
   // the full thing?
   case object UniprotKB extends APIBundle(
-    SwissProt             :~: 
-    SwissProtIsoforms     :~:
+    SwissProt :~: 
+    SwissProtIsoforms :~:
     SwissProtInteractions :~:
-    TrEMBL                :~:
-    TrEMBLInteractions    :~:     
-    TrEMBLIsoforms        :~:
+    TrEMBL :~:
+    TrEMBLInteractions :~:     
+    TrEMBLIsoforms :~:
     ∅
   )
   // all data?
   case object FullBio4j extends APIBundle(
-    RefSeq        :~:
-    GO            :~:
-    NCBITaxonomy  :~:
-    ENZYME        :~:
-    UniprotKB     :~:
-    FullUniRef    :~:
+    RefSeq :~:
+    GeneOntology :~:
+    NCBITaxonomy :~:
+    EnzymeDB :~:
+    UniprotKB :~:
+    UniRef :~:
     ∅
   )
-*/
+
 
 }

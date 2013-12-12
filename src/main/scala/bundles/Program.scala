@@ -14,7 +14,7 @@ object Program {
     names         : File,    // 2. Names DMP file
     merged        : File,    // 3. Merged DMP file
     db            : File,    // 4. Bio4j DB folder
-    assocUnitprot : Boolean  // 5. Associate Uniprot taxonomy (true/false)
+    assocUnitprot : Boolean  // 5. Associate UniprotKB taxonomy (true/false)
   ) extends ImporterProgram(new ImportNCBITaxonomyTitan(), Seq(
     nodes.getAbsolutePath, 
     names.getAbsolutePath, 
@@ -55,10 +55,10 @@ object Program {
     db.getAbsolutePath
   ))
 
-  case class Uniref(
-    data100 : File, // 1. Uniref 100 xml file
-    data90  : File, // 2. Uniref 90 xml file
-    data50  : File, // 3. Uniref 50 xml file
+  case class UniRef(
+    data100 : File, // 1. UniRef 100 xml file
+    data90  : File, // 2. UniRef 90 xml file
+    data50  : File, // 3. UniRef 50 xml file
     db      : File  // 4. Bio4j DB folder
   ) extends ImporterProgram(new ImportUnirefTitan(), Seq(
     data100.getAbsolutePath, 
@@ -67,9 +67,9 @@ object Program {
     db.getAbsolutePath
   ))
 
-  case class Uniprot(
-    sprot  : File, // 1. Uniprot sprot xml file 
-    trembl : File, // 2. Uniprot trembl xml file 
+  case class UniprotKB(
+    sprot  : File, // 1. UniprotKB sprot xml file 
+    trembl : File, // 2. UniprotKB trembl xml file 
     db     : File, // 3. Bio4j DB folder
     config : File  // 4. Config XML file
   ) extends AnyImporterProgram {
@@ -84,8 +84,8 @@ object Program {
   }
 
   case class ProteinInteractions(
-    sprot  : File, // 1. Uniprot sprot xml file 
-    trembl : File, // 2. Uniprot trembl xml file 
+    sprot  : File, // 1. UniprotKB sprot xml file 
+    trembl : File, // 2. UniprotKB trembl xml file 
     db     : File  // 3. Bio4j DB folder
   ) extends AnyImporterProgram {
     def importData(data: File) = new ImportProteinInteractionsTitan().execute(
