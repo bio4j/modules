@@ -16,11 +16,19 @@ bucketSuffix := "era7.com"
 libraryDependencies ++= Seq(
   "ohnosequences" %% "bio4j-scala" % "0.1.0-SNAPSHOT" classifier "fat" intransitive(),
   "ohnosequences" %% "amazon-linux-ami" % "0.14.1",
+  "ohnosequences" %% "aws-scala-tools" % "0.4.3",
   "ohnosequences" %% "statika-cli" % "0.17.0" % "test"
 )
 
 // this will be in the next release of nice-sbt-settings
-dependencyOverrides += "org.scala-lang" % "scala-compiler" % scalaVersion.value
+dependencyOverrides ++= Set(
+  "org.scala-lang" % "scala-compiler" % scalaVersion.value,
+  "commons-codec" % "commons-codec" % "1.7",
+  "ohnosequences" %% "aws-scala-tools" % "0.4.3",
+  "com.fasterxml.jackson.core" % "jackson-core" % "2.1.2",
+  "com.fasterxml.jackson.core" % "jackson-databind" % "2.1.2",
+  "com.amazonaws" % "aws-java-sdk" % "1.6.5"
+)
 
 
 // sorry, no docs so far, why bother with generating?

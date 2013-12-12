@@ -9,11 +9,10 @@ package ohnosequences.bio4j.distributions
 import ohnosequences.typesets._
 import ohnosequences.statika._
 import ohnosequences.statika.aws._
+import Release._
 
-import ohnosequences.bio4j.bundles.Release.TaxonomyBio4j 
-
-case object TaxonomyBio4jDist extends AWSDistribution(
+case object Bio4jDist extends AWSDistribution(
   metadata = new generated.metadata.StatikaDistributions(),
   ami = Bio4jAMI(6),
-  members = TaxonomyBio4j :~: ∅
+  members = TaxonomyBio4j :~: IndexedTaxonomyBio4j :~: FullBio4j :~: ∅
 )
