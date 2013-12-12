@@ -9,21 +9,39 @@ package ohnosequences.bio4j.bundles
 import shapeless._
 import ohnosequences.typesets._
 import ohnosequences.statika._
+import ohnosequences.awstools.s3._
 import java.io._
 
 /* Abstract interface: */
 trait AnyReleaseBundle extends AnyBundle {
+  /* - Where the resulting release will be uploaded */
+  val s3address: ObjectAddress
+
+  /* - Whether this release will be published to S3 publicly or not */
+  val public: Boolean
+
+  /* - Module which represents the content of this release */
+  type Module <: AnyModuleBundle
+  val  module: Module
 }
 
 /* Constructor: */
 abstract class ReleaseBundle[
-  D <: TypeSet: boundedBy[AnyModuleBundle]#is, 
-  T <: HList: towerFor[D]#is
-](deps: D) extends Bundle[D, T](deps) with AnyReleaseBundle {
+  M <: AnyModuleBundle,
+  T <: HList: towerFor[M :~: ∅]#is
+](val s3address: ObjectAddress, val module: M, val public: Boolean = true) 
+  extends Bundle[M :~: ∅, T](module :~: ∅) with AnyReleaseBundle {
+
+    type Module = M
 
     override def install[D <: AnyDistribution](d: D): InstallResults = {
-      // TODO: upload everything to S3
-      success("All modules are imported")
+      try { 
+        val s3 = S3.create() // we rely on instance role credentials
+        s3.putObject(s3address, module.dbLocation, public)
+        success(s"Release ${name} was uploaded to ${s3address}")
+      } catch {
+        case e: Exception => failure(e.toString)
+      }
     }
 
 }

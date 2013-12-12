@@ -19,6 +19,10 @@ trait AnyRawDataBundle extends AnyBundle {
   def inDataFolder(name: String): File = new File(dataFolder, name)
 }
 
+case object NoData extends Bundle() with AnyRawDataBundle {
+  val dataFolder: File = new File(".").getAbsoluteFile
+}
+
 /* Constructor: */
 abstract class RawDataBundle(val url: String) 
   extends Bundle() with AnyRawDataBundle {

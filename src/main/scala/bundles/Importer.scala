@@ -10,6 +10,13 @@ case object InitialBio4j extends Bio4jInstanceBundle(new File("/media/ephemeral0
 
 object Importer {
 
+  // This importer doesn't do anything, it just has a reference to initial DB
+  case object Empty extends ImporterBundle(InitialBio4j, NoData) {
+    val program = new AnyImporterProgram {
+      def execute(): Unit = { () }
+    }
+  }
+
   case object NCBITaxonomy extends ImporterBundle(InitialBio4j, RawData.NCBITaxonomy) {
     val program = Program.NCBITaxonomy(
       nodes         = rawData.inDataFolder("nodes.dmp"),

@@ -36,4 +36,19 @@ object Module {
     moduleDeps = UniprotKB :~: ∅
   )
 
+  /* This module combines all others */
+  case object FullBio4j extends ModuleBundle(API.FullBio4j, Importer.Empty)(
+    moduleDeps =
+      NCBITaxonomy :~: 
+      GITaxonomyIndex :~: 
+      RefSeq :~: 
+      GeneOntology :~: 
+      EnzymeDB :~: 
+      UniprotKB :~: 
+      UniRef :~: 
+      ProteinInteractions :~: 
+      IsoformSequences :~: 
+      ∅
+  )
+
 }
