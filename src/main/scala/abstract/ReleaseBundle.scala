@@ -17,9 +17,6 @@ trait AnyReleaseBundle extends AnyBundle {
   /* - Where the resulting release will be uploaded */
   val s3address: ObjectAddress
 
-  /* - Whether this release will be published to S3 publicly or not */
-  val public: Boolean
-
   /* - Module which represents the content of this release */
   type Module <: AnyModuleBundle
   val  module: Module
@@ -37,7 +34,8 @@ abstract class ReleaseBundle[
     override def install[D <: AnyDistribution](d: D): InstallResults = {
       try { 
         val s3 = S3.create() // we rely on instance role credentials
-        s3.putObject(s3address, module.dbLocation, public)
+        val loader = s3.createLoadingManager()
+        loader.uploadDirectory(s3address, module.dbLocation, recursive = true)
         success(s"Release ${name} was uploaded to ${s3address}")
       } catch {
         case e: Exception => failure(e.toString)
