@@ -35,7 +35,7 @@ abstract class ReleaseBundle[
       try { 
         val s3 = S3.create() // we rely on instance role credentials
         val loader = s3.createLoadingManager()
-        loader.uploadDirectory(s3address, module.dbLocation, recursive = true)
+        loader.uploadDirectory(s3address, module.dbLocation, recursively = true)
         success(s"Release ${name} was uploaded to ${s3address}")
       } catch {
         case e: Exception => failure(e.toString)

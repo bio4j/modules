@@ -16,7 +16,7 @@ trait AnyBio4jInstanceBundle extends AnyBundle {
 /* And it also knows how to initialize itself */
 abstract class Bio4jInstanceBundle(val dbLocation: File) extends Bundle() with AnyBio4jInstanceBundle {
 
-  import com.era7.bioinfo.bio4j.titan.programs.InitBio4jTitan
+  import com.ohnosequences.bio4j.titan.programs.InitBio4jTitan
 
   override def install[D <: AnyDistribution](d: D): InstallResults = {
     if (!dbLocation.exists) dbLocation.mkdirs

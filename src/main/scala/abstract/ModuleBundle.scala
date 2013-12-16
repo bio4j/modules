@@ -18,29 +18,22 @@ trait AnyModuleBundle extends AnyBio4jInstanceBundle {
   val  api: API
 
   /* - Corresponding data importer bundle */
-  type Importer <: AnyImporterBundle
-  val  importer: Importer
-
-  /* - Dependencies on other modules */
-  type ModuleDeps <: TypeSet
-  val  moduleDeps: ModuleDeps
+  type ImportedData <: AnyImportedDataBundle
+  val  importedData: ImportedData
 
   /* By the way, module is an instance of Bio4j, and knows where it is located */
-  val dbLocation = importer.initDB.dbLocation
+  val dbLocation = importedData.dbLocation
 }
 
 /* Constructor: */
 abstract class ModuleBundle[
    A <: AnyAPIBundle, 
-   I <: AnyImporterBundle, 
-  Ms <: TypeSet: boundedBy[AnyBio4jInstanceBundle]#is,
-   T <: HList: towerFor[A :~: I :~: Ms]#is
-](val api: A, val importer: I)(val moduleDeps: Ms = ∅)
- (implicit boundEvidence: ofBundles[A :~: I :~: Ms]) // stupid check
-  extends Bundle[A :~: I :~: Ms, T](api :~: importer :~: moduleDeps) with AnyModuleBundle {
+   I <: AnyImportedDataBundle, 
+   T <: HList: towerFor[A :~: I :~: ∅]#is
+](val api: A, val importedData: I)
+  extends Bundle[A :~: I :~: ∅, T](api :~: importedData :~: ∅) with AnyModuleBundle {
 
     type API = A
-    type Importer = I
-    type ModuleDeps = Ms
+    type ImportedData = I
 
 }

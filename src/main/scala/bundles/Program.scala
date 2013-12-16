@@ -3,7 +3,7 @@ package ohnosequences.bio4j.bundles
 import shapeless._
 import shapeless.ops.hlist._
 import ohnosequences.statika._
-import com.era7.bioinfo.bio4j.titan.programs._
+import com.ohnosequences.bio4j.titan.programs._
 import java.io._
 import scala.collection.JavaConversions._
 
@@ -67,36 +67,23 @@ object Program {
     db.getAbsolutePath
   ))
 
-  case class UniprotKB(
-    sprot  : File, // 1. UniprotKB sprot xml file 
-    trembl : File, // 2. UniprotKB trembl xml file 
-    db     : File, // 3. Bio4j DB folder
-    config : File  // 4. Config XML file
-  ) extends AnyImporterProgram {
-    def importData(data: File) = new ImportUniprotTitan().execute(
-      new java.util.ArrayList(Seq(data.getAbsolutePath, db.getAbsolutePath, config.getAbsolutePath))
-    )
-
-    def execute() = {
-      importData(sprot)
-      importData(trembl)
-    }
-  }
+  case class Uniprot(
+    data   : File, // 1. UniprotKB data xml file 
+    db     : File, // 2. Bio4j DB folder
+    config : File  // 3. Config XML file
+  ) extends ImporterProgram(new ImportUniprotTitan(), Seq(
+    data.getAbsolutePath, 
+    db.getAbsolutePath, 
+    config.getAbsolutePath
+  ))
 
   case class ProteinInteractions(
-    sprot  : File, // 1. UniprotKB sprot xml file 
-    trembl : File, // 2. UniprotKB trembl xml file 
-    db     : File  // 3. Bio4j DB folder
-  ) extends AnyImporterProgram {
-    def importData(data: File) = new ImportProteinInteractionsTitan().execute(
-      new java.util.ArrayList(Seq(data.getAbsolutePath, db.getAbsolutePath))
-    )
-
-    def execute() = {
-      importData(sprot)
-      importData(trembl)
-    }
-  }
+    data : File, // 1. UniprotKB data xml file 
+    db   : File  // 2. Bio4j DB folder
+  ) extends ImporterProgram(new ImportProteinInteractionsTitan(), Seq(
+    data.getAbsolutePath, 
+    db.getAbsolutePath
+  ))
 
   case class IsoformSequences(
     data : File, // 1. Fasta file including all isoforms

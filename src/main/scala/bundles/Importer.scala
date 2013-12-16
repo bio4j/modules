@@ -2,90 +2,208 @@ package ohnosequences.bio4j.bundles
 
 import shapeless._
 import shapeless.ops.hlist._
+import ohnosequences.typesets._
 import ohnosequences.statika._
-import com.era7.bioinfo.bio4j.titan.programs._
+import com.ohnosequences.bio4j.titan.programs._
 import java.io._
 
-case object InitialBio4j extends Bio4jInstanceBundle(new File("/media/ephemeral0/bio4jtitandb"))
-
+/* According to https://github.com/bio4j/Bio4j/raw/master/ModuleDependencies.png */
 object Importer {
 
-  // This importer doesn't do anything, it just has a reference to initial DB
-  case object Empty extends ImporterBundle(InitialBio4j, NoData) {
-    val program = new AnyImporterProgram {
-      def execute(): Unit = { () }
+  /* This bundle is important, it doesn't really import anything, but initializes Bio4j */
+  case object InitialBio4j 
+    extends Bio4jInstanceBundle(new File("/media/ephemeral0/bio4jtitandb"))
+    with AnyImportedDataBundle {
+      type RawData = ∅
+      val  rawData = ∅
+      type ImportedData = ∅
+      val  importedData = ∅
+    }
+
+  /* ### NCBITaxonomy */
+  case object NCBITaxonomy extends ImportedDataBundle(
+    rawData = RawData.NCBITaxonomy :~: ∅,
+    importedData = InitialBio4j :~: ∅
+  ) {
+    override def install[D <: AnyDistribution](d: D): InstallResults = {
+      Program.NCBITaxonomy(
+        nodes  = RawData.NCBITaxonomy.inDataFolder("nodes.dmp"),
+        names  = RawData.NCBITaxonomy.inDataFolder("names.dmp"),
+        merged = RawData.NCBITaxonomy.inDataFolder("merged.dmp"),
+        db     = dbLocation,
+        assocUnitprot = true
+      ).execute ->-
+      success(s"Data ${name} is imported to ${dbLocation}")
     }
   }
 
-  case object NCBITaxonomy extends ImporterBundle(InitialBio4j, RawData.NCBITaxonomy) {
-    val program = Program.NCBITaxonomy(
-      nodes         = rawData.inDataFolder("nodes.dmp"),
-      names         = rawData.inDataFolder("names.dmp"),
-      merged        = rawData.inDataFolder("merged.dmp"),
-      db            = initDB.dbLocation,
-      assocUnitprot = true
-    )
+  /* ### GITaxonomyIndex */
+  case object GITaxonomyIndex extends ImportedDataBundle(
+    rawData = RawData.GITaxonomyIndex :~: ∅,
+    importedData = NCBITaxonomy :~: ∅
+  ) {
+    override def install[D <: AnyDistribution](d: D): InstallResults = {
+      Program.IndexNCBITaxonomyByGiId(
+        table = RawData.GITaxonomyIndex.inDataFolder("gi_taxid_nucl.dmp"),
+        db    = dbLocation
+      ).execute ->-
+      success(s"Data ${name} is imported to ${dbLocation}")
+    }
   }
 
-  case object GITaxonomyIndex extends ImporterBundle(InitialBio4j, RawData.GITaxonomyIndex) {
-    val program = Program.IndexNCBITaxonomyByGiId(
-      table = rawData.inDataFolder("gi_taxid_nucl.dmp"),
-      db    = initDB.dbLocation
-    )
+  /* ### RefSeq */
+  case object RefSeq extends ImportedDataBundle(
+    rawData = RawData.RefSeq :~: ∅,
+    importedData = InitialBio4j :~: ∅
+  ) {
+    override def install[D <: AnyDistribution](d: D): InstallResults = {
+      Program.RefSeq(
+        dataFolder = RawData.RefSeq.dataFolder,
+        db         = dbLocation
+      ).execute ->-
+      success(s"Data ${name} is imported to ${dbLocation}")
+    }
   }
 
-  case object RefSeq extends ImporterBundle(InitialBio4j, RawData.RefSeq) {
-    val program = Program.RefSeq(
-      dataFolder = rawData.dataFolder,
-      db         = initDB.dbLocation
-    )
+  /* ### EnzymeDB */
+  case object EnzymeDB extends ImportedDataBundle(
+    rawData = RawData.EnzymeDB :~: ∅,
+    importedData = InitialBio4j :~: ∅
+  ) {
+    override def install[D <: AnyDistribution](d: D): InstallResults = {
+      Program.EnzymeDB(
+        data = RawData.EnzymeDB.inDataFolder("enzyme.dat"),
+        db   = dbLocation
+      ).execute ->-
+      success(s"Data ${name} is imported to ${dbLocation}")
+    }
   }
 
-  case object EnzymeDB extends ImporterBundle(InitialBio4j, RawData.EnzymeDB) {
-    val program = Program.EnzymeDB(
-      data = rawData.inDataFolder("enzyme.dat"),
-      db   = initDB.dbLocation
-    )
+  /* ### GeneOntology */
+  case object GeneOntology extends ImportedDataBundle(
+    rawData = RawData.GeneOntology :~: ∅,
+    importedData = InitialBio4j :~: ∅
+  ) {
+    override def install[D <: AnyDistribution](d: D): InstallResults = {
+      Program.GeneOntology(
+        data = RawData.GeneOntology.inDataFolder("go.xml"),
+        db   = dbLocation
+      ).execute ->-
+      success(s"Data ${name} is imported to ${dbLocation}")
+    }
   }
 
-  case object GeneOntology extends ImporterBundle(InitialBio4j, RawData.GeneOntology) {
-    val program = Program.GeneOntology(
-      data = rawData.inDataFolder("go.xml"),
-      db   = initDB.dbLocation
-    )
+  /* ### Uniprot */
+  case object UniprotSwissProt extends ImportedDataBundle(
+    rawData = RawData.UniprotSwissProt :~: ∅,
+    importedData = EnzymeDB :~: GeneOntology :~: ∅
+  ) {
+    override def install[D <: AnyDistribution](d: D): InstallResults = {
+      Program.Uniprot(
+        data   = RawData.UniprotSwissProt.inDataFolder("uniprot_sprot.xml"),
+        db     = dbLocation,
+        config = RawData.UniprotSwissProt.inDataFolder("uniprotData.xml")
+      ).execute ->-
+      success(s"Data ${name} is imported to ${dbLocation}")
+    }
   }
 
-  case object UniRef extends ImporterBundle(InitialBio4j, RawData.UniRef) {
-    val program = Program.UniRef(
-      data100 = rawData.inDataFolder("uniref100.xml"),
-      data90  = rawData.inDataFolder("uniref90.xml"),
-      data50  = rawData.inDataFolder("uniref50.xml"),
-      db      = initDB.dbLocation
-    )
+  case object UniprotTrEMBL extends ImportedDataBundle(
+    rawData = RawData.UniprotTrEMBL :~: ∅,
+    importedData = EnzymeDB :~: GeneOntology :~: ∅
+  ) {
+    override def install[D <: AnyDistribution](d: D): InstallResults = {
+      Program.Uniprot(
+        data   = RawData.UniprotTrEMBL.inDataFolder("uniprot_trembl.xml"),
+        db     = dbLocation,
+        config = RawData.UniprotTrEMBL.inDataFolder("uniprotData.xml")
+      ).execute ->-
+      success(s"Data ${name} is imported to ${dbLocation}")
+    }
   }
 
-  case object UniprotKB extends ImporterBundle(InitialBio4j, RawData.UniprotKB) {
-    val program = Program.UniprotKB(
-      sprot  = rawData.inDataFolder("uniprot_sprot.xml"),
-      trembl = rawData.inDataFolder("uniprot_trembl.xml"),
-      db     = initDB.dbLocation,
-      config = rawData.inDataFolder("uniprotData.xml")
-    )
+  /* Both things together: */
+  case object UniprotKB extends ImportedDataBundle(
+    importedData = UniprotSwissProt :~: UniprotTrEMBL :~: ∅
+  )
+
+
+  /* ### UniRef */
+  case object UniRef extends ImportedDataBundle(
+    rawData = RawData.UniRef100 :~: RawData.UniRef90 :~: RawData.UniRef50 :~: ∅,
+    importedData = UniprotKB :~: ∅
+  ) {
+    override def install[D <: AnyDistribution](d: D): InstallResults = {
+      Program.UniRef(
+        data100 = RawData.UniRef100.inDataFolder("uniref100.xml"),
+        data90  = RawData.UniRef90.inDataFolder("uniref90.xml"),
+        data50  = RawData.UniRef50.inDataFolder("uniref50.xml"),
+        db = dbLocation
+      ).execute ->-
+      success(s"Data ${name} is imported to ${dbLocation}")
+    }
   }
 
-  case object ProteinInteractions extends ImporterBundle(InitialBio4j, RawData.UniprotKB) {
-    val program = Program.ProteinInteractions(
-      sprot  = rawData.inDataFolder("uniprot_sprot.xml"),
-      trembl = rawData.inDataFolder("uniprot_trembl.xml"),
-      db     = initDB.dbLocation
-    )
+  /* ### ProteinInteractions */
+  case object ProteinInteractionsSwissProt extends ImportedDataBundle(
+    rawData = RawData.UniprotSwissProt :~: ∅,
+    importedData = UniprotSwissProt :~: ∅
+  ) {
+    override def install[D <: AnyDistribution](d: D): InstallResults = {
+      Program.ProteinInteractions(
+        data = RawData.UniprotSwissProt.inDataFolder("uniprot_sprot.xml"),
+        db   = dbLocation
+      ).execute ->-
+      success(s"Data ${name} is imported to ${dbLocation}")
+    }
   }
 
-  case object IsoformSequences extends ImporterBundle(InitialBio4j, RawData.UniprotSprotVarsplic) {
-    val program = Program.IsoformSequences(
-      data   = rawData.inDataFolder("uniprot_sprot_varsplic.fasta"),
-      db     = initDB.dbLocation
-    )
+  case object ProteinInteractionsTrEMBL extends ImportedDataBundle(
+    rawData = RawData.UniprotTrEMBL :~: ∅,
+    importedData = UniprotTrEMBL :~: ∅
+  ) {
+    override def install[D <: AnyDistribution](d: D): InstallResults = {
+      Program.ProteinInteractions(
+        data = RawData.UniprotTrEMBL.inDataFolder("uniprot_trembl.xml"),
+        db   = dbLocation
+      ).execute ->-
+      success(s"Data ${name} is imported to ${dbLocation}")
+    }
   }
+
+  /* Both things together: */
+  case object ProteinInteractions extends ImportedDataBundle(
+    importedData = ProteinInteractionsSwissProt :~: ProteinInteractionsTrEMBL :~: ∅
+  )
+
+  /* ### IsoformSequences */
+  case object IsoformSequences extends ImportedDataBundle(
+    rawData = RawData.UniprotSprotVarsplic :~: ∅,
+    importedData = UniprotKB :~: ∅
+  ) {
+    override def install[D <: AnyDistribution](d: D): InstallResults = {
+      Program.IsoformSequences(
+        data = RawData.UniprotSprotVarsplic.inDataFolder("uniprot_sprot_varsplic.fasta"),
+        db   = dbLocation
+      ).execute ->-
+      success(s"Data ${name} is imported to ${dbLocation}")
+    }
+  }
+
+
+  /* ### Everything together */
+  case object FullBio4j extends ImportedDataBundle(
+    importedData =
+      NCBITaxonomy :~: 
+      GITaxonomyIndex :~: 
+      RefSeq :~: 
+      GeneOntology :~: 
+      EnzymeDB :~: 
+      UniprotKB :~: 
+      UniRef :~: 
+      ProteinInteractions :~: 
+      IsoformSequences :~: 
+      ∅
+  )
 
 }

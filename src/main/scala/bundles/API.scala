@@ -50,7 +50,7 @@ object API {
   )
   // UniprotKB
   // are these dependencies real??
-  case object SwissProt extends APIBundle(       
+  case object UniprotSwissProt extends APIBundle(       
     GeneOntology :~: 
     EnzymeDB :~: 
     RefSeq :~: 
@@ -63,7 +63,7 @@ object API {
     ∅
   )
 
-  case object TrEMBL extends APIBundle(       
+  case object UniprotTrEMBL extends APIBundle(       
     GeneOntology :~:    
     EnzymeDB :~:      
     RefSeq :~:    
@@ -76,25 +76,25 @@ object API {
     ∅
   )
   // interactions
-  case object SwissProtInteractions extends APIBundle(SwissProt :~: ∅)
-  case object TrEMBLInteractions    extends APIBundle(TrEMBL :~: ∅)
+  case object ProteinInteractionsSwissProt extends APIBundle(UniprotSwissProt :~: ∅)
+  case object ProteinInteractionsTrEMBL    extends APIBundle(UniprotTrEMBL :~: ∅)
   case object ProteinInteractions   extends APIBundle(
-    SwissProtInteractions :~: 
-    TrEMBLInteractions :~: 
+    ProteinInteractionsSwissProt :~: 
+    ProteinInteractionsTrEMBL :~: 
     ∅
   )
   // isoforms 
-  case object SwissProtIsoforms extends APIBundle(SwissProt :~: ∅)
-  case object TrEMBLIsoforms    extends APIBundle(TrEMBL :~: ∅)
+  case object IsoformSequencesSwissProt extends APIBundle(UniprotSwissProt :~: ∅)
+  case object IsoformSequencesTrEMBL    extends APIBundle(UniprotTrEMBL :~: ∅)
   case object IsoformSequences  extends APIBundle(
-    SwissProtIsoforms :~: 
-    TrEMBLIsoforms :~: 
+    IsoformSequencesSwissProt :~: 
+    IsoformSequencesTrEMBL :~: 
     ∅
   )
   // UniRef stuff
-  case object UniRef100  extends APIBundle(SwissProt :~: TrEMBL :~: ∅)
-  case object UniRef90   extends APIBundle(SwissProt :~: TrEMBL :~: ∅)
-  case object UniRef50   extends APIBundle(SwissProt :~: TrEMBL :~: ∅)
+  case object UniRef100  extends APIBundle(UniprotSwissProt :~: UniprotTrEMBL :~: ∅)
+  case object UniRef90   extends APIBundle(UniprotSwissProt :~: UniprotTrEMBL :~: ∅)
+  case object UniRef50   extends APIBundle(UniprotSwissProt :~: UniprotTrEMBL :~: ∅)
   case object UniRef     extends APIBundle(
     UniRef50 :~:
     UniRef90 :~:
@@ -103,12 +103,12 @@ object API {
   )
   // the full thing?
   case object UniprotKB extends APIBundle(
-    SwissProt :~: 
-    SwissProtIsoforms :~:
-    SwissProtInteractions :~:
-    TrEMBL :~:
-    TrEMBLInteractions :~:     
-    TrEMBLIsoforms :~:
+    UniprotSwissProt :~: 
+    IsoformSequencesSwissProt :~:
+    ProteinInteractionsSwissProt :~:
+    UniprotTrEMBL :~:
+    ProteinInteractionsTrEMBL :~:     
+    IsoformSequencesTrEMBL :~:
     ∅
   )
   // all data?

@@ -12,7 +12,7 @@ bucketSuffix := "era7.com"
 
 libraryDependencies ++= Seq(
   "ohnosequences" %% "statika" % "1.0.0",
-  "ohnosequences" %% "aws-scala-tools" % "0.4.4-SNAPSHOT",
+  "ohnosequences" %% "aws-scala-tools" % "0.5.0-SNAPSHOT",
   "ohnosequences" % "bio4j-titandb" % "0.2.0-SNAPSHOT" classifier "fat" intransitive()
 )
 
