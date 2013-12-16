@@ -26,9 +26,9 @@ class ApplicationTest extends FunSuite with ParallelTestExecution {
       val specs = InstanceSpecs(
           instanceType = InstanceType.InstanceType("m1.large")
         , amiId = dist.ami.id
-        , keyName = "alexey" 
+        , keyName = "statika" 
         , userData = userscript
-        , instanceProfile = Some("arn:aws:iam::393321850454:instance-profile/god")
+        , instanceProfile = Some("bio4j-releaser")
         )
 
       val result = ec2.applyAndWait(bundle.name, specs, 1) match {
@@ -39,7 +39,7 @@ class ApplicationTest extends FunSuite with ParallelTestExecution {
     }
   }
 
-  testBundle(TaxonomyBio4j)
-  // testBundle(IndexedTaxonomyBio4j)
+  // testBundle(TaxonomyBio4j)
+  testBundle(IndexedTaxonomyBio4j)
   
 }

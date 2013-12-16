@@ -18,20 +18,16 @@ Should be storage backed.
 case class Bio4jAMI(heap: Int) // in Gb
   extends AmazonLinuxAMI[FatJarMetadata]("ami-f1ec0e86", "2013.09") {
 
-  // TODO: use alternatives
-  def preparing(creds: AWSCredentials) = """
-    |aws s3 cp s3://resources.ohnosequences.com/java7-oracle.rpm java7-oracle.rpm
-    |aws s3 cp s3://resources.ohnosequences.com/scala-2.10.3.rpm scala-2.10.3.rpm
-    |yum install -y java7-oracle.rpm scala-2.10.3.rpm
-    |alias java=java7
-    |""".stripMargin
+    def preparing(creds: AWSCredentials) = AMI149f7863.preparing(creds)
 
     def building(
         md: MetadataBound
       , distName: String
       , bundleName: String
       , creds: AWSCredentials = RoleCredentials
-      ): String = AMI149f7863.building(md, distName, bundleName, creds)
+      ): String = """
+      |cd /media/ephemeral0
+      |""".stripMargin + AMI149f7863.building(md, distName, bundleName, creds)
 
     // Here is the main difference:
     def applying: String = s"""

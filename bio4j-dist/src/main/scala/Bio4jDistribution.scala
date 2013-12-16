@@ -12,7 +12,7 @@ import ohnosequences.statika.aws._
 import Release._
 
 case object Bio4jDist extends AWSDistribution(
-  metadata = new generated.metadata.StatikaDistributions(),
+  metadata = new generated.metadata.Bio4jDist(),
   ami = Bio4jAMI(6),
   members = TaxonomyBio4j :~: IndexedTaxonomyBio4j :~: FullBio4j :~: ∅
 )
