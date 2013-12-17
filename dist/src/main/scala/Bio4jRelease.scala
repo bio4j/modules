@@ -6,9 +6,10 @@ import ohnosequences.typesets._
 import ohnosequences.statika._
 import ohnosequences.statika.aws._
 import ohnosequences.awstools.s3._
+import ohnosequences.bio4j.statika._
 import ohnosequences.bio4j.bundles._
 
-object Release {
+object Bio4jRelease {
 
   case object TaxonomyBio4j extends ReleaseBundle(
     ObjectAddress("my.nonexisting.bucket", "bio4j/taxonomy"), 

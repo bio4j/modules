@@ -12,14 +12,20 @@ import java.io._
 object Importer {
 
   /* This bundle is important, it doesn't really import anything, but initializes Bio4j */
-  case object InitialBio4j 
-    extends Bio4jInstanceBundle(new File("/media/ephemeral0/bio4jtitandb"))
-    with AnyImportedDataBundle {
-      type RawData = ∅
-      val  rawData = ∅
-      type ImportedData = ∅
-      val  importedData = ∅
+  case object InitialBio4j extends Bundle() with AnyImportedDataBundle {
+    type RawData = ∅
+    val  rawData = ∅
+    type ImportedData = ∅
+    val  importedData = ∅
+
+    val dbLocation: File = new File("/media/ephemeral0/bio4jtitandb")
+
+    override def install[D <: AnyDistribution](d: D): InstallResults = {
+      if (!dbLocation.exists) dbLocation.mkdirs
+      InitBio4jTitan.main(Array(dbLocation.getAbsolutePath))
+      success(s"Initialized Bio4j DB in ${dbLocation}")
     }
+  }
 
   /* ### NCBITaxonomy */
   case object NCBITaxonomy extends ImportedDataBundle(

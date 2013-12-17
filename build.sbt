@@ -1,24 +1,16 @@
 Nice.scalaProject
 
-Nice.fatArtifactSettings
+// an aggregating root project:
+description := "bio4j statikated project"
 
-name := "bio4j-scala"
+publish := {}
 
-description := "bio4j-scala project"
+generateDocs := {}
 
-organization := "ohnosequences"
+// common for all subprojects:
+organization in ThisBuild := "ohnosequences"
 
-bucketSuffix := "era7.com"
-
-libraryDependencies ++= Seq(
-  "ohnosequences" %% "statika" % "1.0.0",
-  "ohnosequences" %% "aws-scala-tools" % "0.5.0-SNAPSHOT",
-  "ohnosequences" % "bio4j-titandb" % "0.2.0-SNAPSHOT" classifier "fat" intransitive()
-)
-
-dependencyOverrides ++= Set(
-  "org.scala-lang" % "scala-compiler" % scalaVersion.value,
-  "commons-codec" % "commons-codec" % "1.7",
-  "com.fasterxml.jackson.core" % "jackson-core" % "2.1.2",
-  "com.fasterxml.jackson.core" % "jackson-databind" % "2.1.2"
-)
+// subprojects:
+lazy val lib = project
+lazy val titandb = project dependsOn lib
+lazy val dist = project dependsOn titandb
