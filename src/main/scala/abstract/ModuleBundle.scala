@@ -4,7 +4,7 @@ This bundle represents a module of Bio4j DB. A distribution of Bio4j should depe
 such modules and that will define which data will be imported to the DB.
 */
 
-package ohnosequences.bio4j.bundles
+package ohnosequences.bio4j.statika
 
 import shapeless._
 import ohnosequences.typesets._

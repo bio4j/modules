@@ -2,6 +2,7 @@ package ohnosequences.bio4j.bundles
 
 import ohnosequences.typesets._
 import ohnosequences.statika._
+import ohnosequences.bio4j.statika._
 
 object API {
 

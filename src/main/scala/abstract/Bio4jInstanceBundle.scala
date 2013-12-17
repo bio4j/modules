@@ -3,7 +3,7 @@
 This bundle represents an instance of initialized Bio4j, into which we are going to import data modules.
 */
 
-package ohnosequences.bio4j.bundles
+package ohnosequences.bio4j.statika
 
 import ohnosequences.statika._
 import java.io._

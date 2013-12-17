@@ -6,7 +6,7 @@ of importing data and can easily create bundles which don't do anything by thems
 others.
 */
 
-package ohnosequences.bio4j.bundles
+package ohnosequences.bio4j.statika
 
 import shapeless._
 import ohnosequences.typesets._
@@ -56,7 +56,7 @@ abstract class ImportedDataBundle[
   Tw <: HList
 ](val rawData: Rs = ∅, val importedData: In :~: Is)
  (implicit 
-    union: UnionOf[Rs, In :~: Is]#is[Ds],
+    union: UnionSets[Rs, In :~: Is]{ type Out = Ds },
     bound: ofBundles[Ds],
     tower: towerFor[Ds]#is[Tw]
  ) extends Bundle[Ds, Tw](union(rawData, importedData)) with AnyImportedDataBundle {

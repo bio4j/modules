@@ -3,7 +3,7 @@
 This bundle just downloads raw data files and unpacks them if needed.
 */
 
-package ohnosequences.bio4j.bundles
+package ohnosequences.bio4j.statika
 
 import ohnosequences.statika._
 import java.net.URL

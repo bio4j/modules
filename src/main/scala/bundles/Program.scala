@@ -3,6 +3,7 @@ package ohnosequences.bio4j.bundles
 import shapeless._
 import shapeless.ops.hlist._
 import ohnosequences.statika._
+import ohnosequences.bio4j.statika._
 import com.ohnosequences.bio4j.titan.programs._
 import java.io._
 import scala.collection.JavaConversions._

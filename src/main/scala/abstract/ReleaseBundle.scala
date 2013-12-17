@@ -4,7 +4,7 @@ A release is a bundle which combines particular modules and when being applied, 
 the database, which will be later represented by a `Bio4jDistribution`
 */
 
-package ohnosequences.bio4j.bundles
+package ohnosequences.bio4j.statika
 
 import shapeless._
 import ohnosequences.typesets._

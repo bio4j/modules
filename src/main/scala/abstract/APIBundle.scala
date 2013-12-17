@@ -3,7 +3,7 @@
 This bundle describes generic API for Bio4j modules
 */
 
-package ohnosequences.bio4j.bundles
+package ohnosequences.bio4j.statika
 
 import shapeless._
 import ohnosequences.typesets._
