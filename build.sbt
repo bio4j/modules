@@ -13,4 +13,4 @@ organization in ThisBuild := "ohnosequences"
 // subprojects:
 lazy val lib = project
 lazy val titandb = project dependsOn lib
-lazy val dist = project dependsOn titandb
+lazy val distribution = project dependsOn titandb
