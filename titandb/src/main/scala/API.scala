@@ -3,13 +3,19 @@ package ohnosequences.bio4j.bundles
 import ohnosequences.bio4j.statika._
 import ohnosequences.typesets._
 import ohnosequences.statika._
+import com.ohnosequences.bio4j.titan.model.util._
 
 object API {
 
   // Taxonomy
-  case object NCBITaxonomy    extends APIBundle
+  case object NCBITaxonomy    extends APIBundle(){
+    // def getTaxonByName(String taxonName): Taxon
+    // def getNCBITaxonByTaxId(String taxId): NCBITaxon
+  }
 
-  case object GITaxonomyIndex extends APIBundle(NCBITaxonomy :~: ∅)
+  case object GITaxonomyIndex extends APIBundle(NCBITaxonomy :~: ∅) {
+    // def getNCBITaxonByGiId(String giId): NCBITaxon
+  }
   // RefSeq
   case object RefSeq          extends APIBundle()
   // Gene Ontology

@@ -11,11 +11,11 @@ import ohnosequences.bio4j.bundles._
 
 object Bio4jRelease {
 
-  case object TaxonomyBio4j extends ReleaseBundle(
+  case object NCBITaxonomy extends ReleaseBundle(
     ObjectAddress("my.nonexisting.bucket", "bio4j/taxonomy"), 
     Module.NCBITaxonomy
   )
-  case object IndexedTaxonomyBio4j extends ReleaseBundle(
+  case object GITaxonomyIndex extends ReleaseBundle(
     ObjectAddress("my.nonexisting.bucket", "bio4j/indexed_taxonomy"), 
     Module.GITaxonomyIndex
   )
