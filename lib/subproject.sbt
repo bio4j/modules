@@ -17,3 +17,8 @@ dependencyOverrides ++= Set(
   // stupid java-aws-sdk depends on two versions of this:
   "commons-codec" % "commons-codec" % "1.7"
 )
+
+
+docsInputDir := baseDirectory.value + "/src/main/scala/"
+
+docsOutputDir := "docs/src/lib/"

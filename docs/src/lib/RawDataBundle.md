@@ -1,23 +1,13 @@
 ### Index
 
-+ src
-  + main
-    + scala
-      + abstract
-        + [APIBundle.scala](APIBundle.md)
-        + [Bio4jInstanceBundle.scala](Bio4jInstanceBundle.md)
-        + [DistributionBundle.scala](DistributionBundle.md)
-        + [ModuleBundle.scala](ModuleBundle.md)
-        + [RawDataBundle.scala](RawDataBundle.md)
-        + [ReleaseBundle.scala](ReleaseBundle.md)
-      + bundles
-        + [API.scala](../bundles/API.md)
-        + [Module.scala](../bundles/Module.md)
-        + [RawData.scala](../bundles/RawData.md)
-        + [Release.scala](../bundles/Release.md)
-  + test
-    + scala
-      + [bio4j-scalaTest.scala](../../../test/scala/bio4j-scalaTest.md)
++ scala
+  + [APIBundle.scala](APIBundle.md)
+  + [Bio4jInstanceBundle.scala](Bio4jInstanceBundle.md)
+  + [DistributionBundle.scala](DistributionBundle.md)
+  + [ImportedDataBundle.scala](ImportedDataBundle.md)
+  + [ModuleBundle.scala](ModuleBundle.md)
+  + [RawDataBundle.scala](RawDataBundle.md)
+  + [ReleaseBundle.scala](ReleaseBundle.md)
 
 ------
 
@@ -27,7 +17,7 @@ This bundle just downloads raw data files and unpacks them if needed.
 
 
 ```scala
-package ohnosequences.bio4j.bundles
+package ohnosequences.bio4j.statika
 
 import ohnosequences.statika._
 import java.net.URL
@@ -38,7 +28,24 @@ import sys.process._
 Abstract interface:
 
 ```scala
-trait AnyRawDataBundle extends AnyBundle
+trait AnyRawDataBundle extends AnyBundle {
+```
+
+- Where the unpacked data is located:
+
+```scala
+  val dataFolder: File
+```
+
+- A constructor for relative file paths:
+
+```scala
+  def inDataFolder(name: String): File = new File(dataFolder, name)
+}
+
+case object NoData extends Bundle() with AnyRawDataBundle {
+  val dataFolder: File = new File(".").getAbsoluteFile
+}
 ```
 
 Constructor:
@@ -53,14 +60,8 @@ abstract class RawDataBundle(val url: String)
         ".tar.gz" -> Seq("tar", "xvf", archive),
         ".gz" -> Seq("gunzip", archive)
       ).find{ case (ext, cmd) => archive.endsWith(ext) }
-```
 
-This value provides the link to the data useful for other bundles
-
-```scala
     val dataFolder: File = new File(archive.stripSuffix(archType.map(_._1).getOrElse("")))
-
-    def pathOf(name: String): String = new File(dataFolder, name).getAbsolutePath
 
     override def install[D <: AnyDistribution](d: D): InstallResults = {
       if (!dataFolder.exists) dataFolder.mkdirs

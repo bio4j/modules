@@ -6,5 +6,7 @@ description := "Abstract structure of bio4j-statika modules"
 
 bucketSuffix := "era7.com"
 
-// libraryDependencies ++= Seq(
-// )
+
+docsInputDir := baseDirectory.value + "/src/main/scala/"
+
+docsOutputDir := "docs/src/titandb/"
