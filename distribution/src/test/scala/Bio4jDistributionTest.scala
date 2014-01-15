@@ -13,10 +13,12 @@ import ohnosequences.bio4j.distributions._
 class ApplicationTest extends FunSuite with ParallelTestExecution {
 
   // for running test you need to have this file in your project folder
-  val ec2 = EC2.create(new File("/Users/laughedelic/.ec2/Intercrossing.credentials"))
+  val ec2 = EC2.create(new File("Intercrossing.credentials"))
 
   val dist = Bio4jDistributionDist
   val bundle = Bio4jDistribution.TestTaxonomy
+  // val dist = Bio4jReleaseDist
+  // val bundle = Bio4jRelease.NCBITaxonomy
 
   // def testBundle[B <: AnyBundle : dist.isMember : dist.isInstallable](bundle: B) = {
     test("Apply "+bundle.name+" bundle to an instance"){
