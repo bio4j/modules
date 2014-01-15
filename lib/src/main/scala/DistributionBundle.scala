@@ -19,19 +19,20 @@ trait AnyDistributionBundle extends AnyBio4jInstanceBundle {
   type API <: AnyAPIBundle
   val  api: API
 
-  def bio4jManager: Bio4jManager  
-  def nodeRetriever: NodeRetrieverTitan    
+  def bio4jManager: Bio4jManager
+  def nodeRetriever: NodeRetrieverTitan
 }
 
 /* Constructor: */
-abstract class DistributionBundle[R <: AnyReleaseBundle](val release: R, val dbLocation: File)
+abstract class DistributionBundle[R <: AnyReleaseBundle](val release: R, destination: File)
   extends Bundle() with AnyDistributionBundle {
 
     type API = release.module.API
     val  api = release.module.api
 
-    def bio4jManager = new Bio4jManager(dbLocation.getAbsolutePath)
+    val dbLocation = new File(destination, release.s3address.key) 
 
+    def bio4jManager = new Bio4jManager(dbLocation.getAbsolutePath)
     def nodeRetriever = new NodeRetrieverTitan(bio4jManager)
 
     override def install[D <: AnyDistribution](d: D): InstallResults = {
@@ -39,9 +40,10 @@ abstract class DistributionBundle[R <: AnyReleaseBundle](val release: R, val dbL
         val s3 = S3.create() // we rely on instance role credentials
         val loader = s3.createLoadingManager()
 
-        if (!dbLocation.exists) dbLocation.mkdirs
+        if (!destination.exists) destination.mkdirs
 
-        loader.downloadDirectory(release.s3address, dbLocation)
+        loader.downloadDirectory(release.s3address, destination)
+
         success(s"Distribution ${name} was dowloaded to ${dbLocation} and initialized")
       } catch {
         case e: Exception => failure(e.toString)
