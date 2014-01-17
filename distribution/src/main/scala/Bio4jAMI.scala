@@ -12,11 +12,11 @@ import ohnosequences.statika.aws._
 import ohnosequences.statika.ami._
 
 /* 
-Based on the standard ami-f1ec0e86: "PV Instance Store 64-bit (eu-west-1)" 
+Based on the standard ami-5456b823: "PV Instance Store 64-bit (eu-west-1)" 
 Should be storage backed.
 */
 case class Bio4jAMI(heap: Int) // in Gb
-  extends AmazonLinuxAMI[FatJarMetadata]("ami-f1ec0e86", "2013.09") {
+  extends AmazonLinuxAMI[FatJarMetadata]("ami-5456b823", "2013.09.2") {
 
     def preparing(creds: AWSCredentials) = AMI149f7863.preparing(creds)
 
