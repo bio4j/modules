@@ -9,15 +9,16 @@ bucketSuffix := "era7.com"
 libraryDependencies ++= Seq(
   "ohnosequences" %% "statika" % "1.0.0",
   "ohnosequences" %% "aws-scala-tools" % "0.5.0",
-  // we use fat jar here to avoid repeating all the merging strategy settings:
-  "ohnosequences" % "bio4j-titandb" % "0.2.0" classifier "fat" intransitive()
+  "ohnosequences" % "bio4j-titandb" % "0.2.0"
 )
 
 dependencyOverrides ++= Set(
-  // stupid java-aws-sdk depends on two versions of this:
-  "commons-codec" % "commons-codec" % "1.7"
+  "commons-codec" % "commons-codec" % "1.7",
+  "com.fasterxml.jackson.core" % "jackson-core" % "2.1.2",
+  "com.fasterxml.jackson.core" % "jackson-databind" % "2.1.2",
+  "commons-beanutils" % "commons-beanutils" % "1.8.3",
+  "commons-beanutils" % "commons-beanutils-core" % "1.8.3"
 )
-
 
 docsInputDir := baseDirectory.value + "/src/main/scala/"
 

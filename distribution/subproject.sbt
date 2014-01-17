@@ -25,6 +25,14 @@ dependencyOverrides ++= Set(
   "com.fasterxml.jackson.core" % "jackson-databind" % "2.1.2"
 )
 
+mergeStrategy in assembly ~= { old => {
+    case PathList("META-INF", "CHANGES.txt")                      => MergeStrategy.rename
+    case PathList("META-INF", "LICENSES.txt")                     => MergeStrategy.rename
+    case "log4j.properties"                                       => MergeStrategy.filterDistinctLines
+    case PathList("org", "apache", "commons", "collections", _*)  => MergeStrategy.first
+    case x                                                        => old(x)
+  }
+}
 
 // sorry, no docs so far, why bother with generating?
 generateDocs := {}
