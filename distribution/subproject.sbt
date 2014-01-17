@@ -42,3 +42,16 @@ generateDocs := {}
 
 // Showing time spent on each test
 testOptions in Test += Tests.Argument("-oD")
+
+// publishing also a fat artifact in test:
+Project.inConfig(Test)(assemblySettings)
+
+jarName in (Test, assembly) := s"${name.value}-assembly-test-${version.value}.jar"
+
+mergeStrategy in (Test, assembly) := (mergeStrategy in assembly).value
+
+test in (Test, assembly) := {}
+
+artifact in (Test, assembly) ~= { _.copy(`classifier` = Some("test")) }
+
+addArtifact(artifact in (Test, assembly), assembly in Test)

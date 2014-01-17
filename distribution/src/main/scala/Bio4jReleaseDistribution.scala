@@ -14,5 +14,5 @@ import Bio4jRelease._
 case object Bio4jReleaseDist extends AWSDistribution(
   metadata = new generated.metadata.Bio4jScalaDistribution(),
   ami = Bio4jAMI(6),
-  members = NCBITaxonomy :~: GITaxonomyIndex :~: FullBio4j :~: ∅
+  members = NCBITaxonomy :~: GITaxonomyIndex :~: ∅
 )

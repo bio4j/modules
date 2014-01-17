@@ -14,24 +14,12 @@ object Bio4jDistribution {
 
   case object NCBITaxonomy extends DistributionBundle(
     Bio4jRelease.NCBITaxonomy,
-    new File("/media/ephemeral0/")
+    destPrefix = new File("/media/ephemeral0/")
   )
   case object GITaxonomyIndex extends DistributionBundle(
     Bio4jRelease.GITaxonomyIndex,
-    new File("/media/ephemeral0/")
+    destPrefix = new File("/media/ephemeral0/")
   )
-
-  case object TestTaxonomy extends Bundle(GITaxonomyIndex :~: ∅) {
-    override def install[D <: AnyDistribution](d: D): InstallResults = {
-      {
-        val neandertal = GITaxonomyIndex.nodeRetriever.getNCBITaxonByTaxId("63221")
-        success("Got the " + neandertal.getScientificName + " taxon!")
-      } -&- {
-        val gorilla = GITaxonomyIndex.nodeRetriever.getNCBITaxonByTaxId("9595")
-        success("Got the " + gorilla.getScientificName + " taxon!")
-      }
-    }
-  }
 
 } 
 

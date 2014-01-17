@@ -19,9 +19,9 @@ object Bio4jRelease {
     ObjectAddress("my.nonexisting.bucket", "bio4j/indexed_taxonomy"), 
     Module.GITaxonomyIndex
   )
-  case object FullBio4j extends ReleaseBundle(
-    ObjectAddress("my.nonexisting.bucket", "bio4j/full"), 
-    Module.FullBio4j
-  )
+  // case object FullBio4j extends ReleaseBundle(
+  //   ObjectAddress("my.nonexisting.bucket", "bio4j/full"), 
+  //   Module.FullBio4j
+  // )
 
 } 
