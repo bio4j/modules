@@ -29,7 +29,7 @@ trait AnyImportedDataBundle extends AnyBio4jInstanceBundle {
 /* Constructor: */
 abstract class ImportedDataBundle[
   Rs <: TypeSet: boundedBy[AnyRawDataBundle]#is,
-  In <: AnyImportedDataBundle,                        // head
+  In <: AnyBio4jInstanceBundle,                        // head
   Is <: TypeSet: boundedBy[AnyImportedDataBundle]#is, // tail
   Ds <: TypeSet,
   Tw <: HList

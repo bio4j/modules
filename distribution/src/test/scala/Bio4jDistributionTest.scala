@@ -40,10 +40,10 @@ class ApplicationTest extends FunSuite with ParallelTestExecution {
   // for running test you need to have this file in your project folder
   val ec2 = EC2.create(new File("Intercrossing.credentials"))
 
-  val dist = TestDist
-  val bundle = TestTaxonomy
-  // val dist = Bio4jReleaseDist
-  // val bundle = Bio4jRelease.NCBITaxonomy
+  // val dist = TestDist
+  // val bundle = TestTaxonomy
+  val dist = IncrementalImporter.Bio4jIncDist
+  val bundle = IncrementalImporter.TaxIndexIncRelease
 
   // def testBundle[B <: AnyBundle : dist.isMember : dist.isInstallable](bundle: B) = {
     test("Apply "+bundle.name+" bundle to an instance"){
