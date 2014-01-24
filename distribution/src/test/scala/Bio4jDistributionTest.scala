@@ -9,18 +9,16 @@ import org.scalatest._
 import ohnosequences.typesets._
 import ohnosequences.statika._
 import ohnosequences.statika.aws._
+import ohnosequences.statika.ami._
 import ohnosequences.bio4j.distributions._ 
 import Bio4jDistribution._
 
-case object TestTaxonomy extends Bundle(GITaxonomyIndex :~: ∅) {
+case object TestTaxonomy extends Bundle(GITaxonomyIndex_1000_1000 :~: ∅) {
   override def install[D <: AnyDistribution](d: D): InstallResults = {
-    {
-      val gorilla = GITaxonomyIndex.nodeRetriever.getNCBITaxonByTaxId("9595")
-      success("Got the " + gorilla.getScientificName + " taxon!")
-    } -&- {
-      val neandertal = GITaxonomyIndex.nodeRetriever.getNCBITaxonByTaxId("63221")
-      success("Got the " + neandertal.getScientificName + " taxon!")
-    }
+    val gorillaTax = GITaxonomyIndex_1000_1000.nodeRetriever.getNCBITaxonByTaxId("9595")
+    val gorillaGI  = GITaxonomyIndex_1000_1000.nodeRetriever.getNCBITaxonByGiId("1222560")
+    if(gorillaTax == gorillaGI) success(s"Got ${gorillaTax.getScientificName} by Tax ID and GI ID")
+    else failure("Got ${gorillaTax.getScientificName} by Tax ID and ${gorillaGI.getScientificName} by GI ID")
   }
 }
 
@@ -30,8 +28,8 @@ object Metadata extends generated.metadata.Bio4jScalaDistribution {
 }
 
 case object TestDist extends AWSDistribution(
-  metadata = Metadata, //new generated.metadata.Bio4jScalaDistribution(),
-  ami = Bio4jAMI(6),
+  metadata = Metadata,
+  ami = amzn_ami_pv_64bit(AWSRegion.Ireland)(javaHeap = 6),
   members = TestTaxonomy :~: ∅
 )
 
@@ -43,7 +41,7 @@ class ApplicationTest extends FunSuite with ParallelTestExecution {
   val dist = TestDist
   val bundle = TestTaxonomy
   // val dist = Bio4jReleaseDist
-  // val bundle = Bio4jRelease.NCBITaxonomy
+  // val bundle = Bio4jRelease.GITaxonomyNodes
 
   // def testBundle[B <: AnyBundle : dist.isMember : dist.isInstallable](bundle: B) = {
     test("Apply "+bundle.name+" bundle to an instance"){
