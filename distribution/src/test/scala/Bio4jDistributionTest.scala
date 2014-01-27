@@ -13,12 +13,13 @@ import ohnosequences.statika.ami._
 import ohnosequences.bio4j.distributions._ 
 import Bio4jDistribution._
 
-case object TestTaxonomy extends Bundle(GITaxonomyIndex_1000_1000 :~: ∅) {
+case object TestTaxonomy extends Bundle(GITaxonomyIndex :~: ∅) {
   override def install[D <: AnyDistribution](d: D): InstallResults = {
-    val gorillaTax = GITaxonomyIndex_1000_1000.nodeRetriever.getNCBITaxonByTaxId("9595")
-    val gorillaGI  = GITaxonomyIndex_1000_1000.nodeRetriever.getNCBITaxonByGiId("1222560")
-    if(gorillaTax == gorillaGI) success(s"Got ${gorillaTax.getScientificName} by Tax ID and GI ID")
-    else failure("Got ${gorillaTax.getScientificName} by Tax ID and ${gorillaGI.getScientificName} by GI ID")
+    val gorillaTax = GITaxonomyIndex.nodeRetriever.getNCBITaxonByTaxId("9595")
+    val gorillaGI  = GITaxonomyIndex.nodeRetriever.getNCBITaxonByGiId("1222560")
+    if(gorillaTax.getNode == gorillaGI.getNode)
+         success(s"Got ${gorillaTax.getScientificName} by Tax ID and GI ID")
+    else failure(s"Got different nodes for ${gorillaTax.getTaxId} Tax ID and 1222560 GI ID")
   }
 }
 
