@@ -15,5 +15,5 @@ import Bio4jRelease._
 case class Bio4jReleaseDist(region: AWSRegion = AWSRegion.Ireland) extends AWSDistribution(
   metadata = new generated.metadata.Bio4jScalaDistribution(),
   ami = amzn_ami_pv_64bit(region)(javaHeap = 6),
-  members = NCBITaxonomy :~: GITaxonomyIndex_1000_1000 :~: GITaxonomyIndex :~: GITaxonomyNodes :~: ∅
+  members = NCBITaxonomy :~: GITaxonomyIndex :~: GITaxonomyNodes :~: ∅
 )
