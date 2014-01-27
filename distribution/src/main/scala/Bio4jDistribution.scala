@@ -20,8 +20,8 @@ object Bio4jDistribution {
     IncrementalImporter.TaxIndexIncRelease,
     destPrefix = new File("/media/ephemeral0/")
   )
-  case object GITaxonomyIndex_1000_1000 extends DistributionBundle(
-    Bio4jRelease.GITaxonomyIndex_1000_1000,
+  case object GITaxonomyNodes extends DistributionBundle(
+    Bio4jRelease.GITaxonomyNodes,
     destPrefix = new File("/media/ephemeral0/")
   )
 
