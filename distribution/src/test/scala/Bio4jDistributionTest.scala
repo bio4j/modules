@@ -9,18 +9,17 @@ import org.scalatest._
 import ohnosequences.typesets._
 import ohnosequences.statika._
 import ohnosequences.statika.aws._
+import ohnosequences.statika.ami._
 import ohnosequences.bio4j.distributions._ 
 import Bio4jDistribution._
 
 case object TestTaxonomy extends Bundle(GITaxonomyIndex :~: ∅) {
   override def install[D <: AnyDistribution](d: D): InstallResults = {
-    {
-      val gorilla = GITaxonomyIndex.nodeRetriever.getNCBITaxonByTaxId("9595")
-      success("Got the " + gorilla.getScientificName + " taxon!")
-    } -&- {
-      val neandertal = GITaxonomyIndex.nodeRetriever.getNCBITaxonByTaxId("63221")
-      success("Got the " + neandertal.getScientificName + " taxon!")
-    }
+    val gorillaTax = GITaxonomyIndex.nodeRetriever.getNCBITaxonByTaxId("9595")
+    val gorillaGI  = GITaxonomyIndex.nodeRetriever.getNCBITaxonByGiId("1222560")
+    if(gorillaTax.getNode == gorillaGI.getNode)
+         success(s"Got ${gorillaTax.getScientificName} by Tax ID and GI ID")
+    else failure(s"Got different nodes for ${gorillaTax.getTaxId} Tax ID and 1222560 GI ID")
   }
 }
 
@@ -30,8 +29,8 @@ object Metadata extends generated.metadata.Bio4jScalaDistribution {
 }
 
 case object TestDist extends AWSDistribution(
-  metadata = Metadata, //new generated.metadata.Bio4jScalaDistribution(),
-  ami = Bio4jAMI(6),
+  metadata = Metadata,
+  ami = amzn_ami_pv_64bit(AWSRegion.Ireland)(javaHeap = 6),
   members = TestTaxonomy :~: ∅
 )
 
