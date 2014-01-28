@@ -16,6 +16,9 @@ import java.io.File
 
 /* Abstract interface: */
 trait AnyDistributionBundle extends AnyBio4jInstanceBundle {
+  type Release <: AnyReleaseBundle
+  val release: Release
+
   type API <: AnyAPIBundle
   val  api: API
 
@@ -24,8 +27,11 @@ trait AnyDistributionBundle extends AnyBio4jInstanceBundle {
 }
 
 /* Constructor: */
-abstract class DistributionBundle[R <: AnyReleaseBundle](val release: R, destPrefix: File)
+abstract class DistributionBundle[R <: AnyReleaseBundle](rel: R, destPrefix: File)
   extends Bundle() with AnyDistributionBundle {
+
+    type Release = R
+    val  release = rel
 
     type API = release.module.API
     val  api = release.module.api

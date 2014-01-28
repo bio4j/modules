@@ -13,7 +13,7 @@ bucketSuffix := "era7.com"
 
 libraryDependencies ++= Seq(
   "ohnosequences" %% "amazon-linux-ami" % "0.15.0-SNAPSHOT",
-  "ohnosequences" %% "aws-scala-tools" % "0.5.4",
+  "ohnosequences" %% "aws-scala-tools" % "0.5.5-SNAPSHOT",
   "ohnosequences" %% "statika-cli" % "0.17.0" % "test"
 )
 
@@ -21,7 +21,7 @@ dependencyOverrides ++= Set(
   "org.scala-lang" % "scala-compiler" % scalaVersion.value,
   "commons-codec" % "commons-codec" % "1.7",
   "com.amazonaws" % "aws-java-sdk" % "1.6.8",
-  "ohnosequences" %% "aws-scala-tools" % "0.5.4",
+  "ohnosequences" %% "aws-scala-tools" % "0.5.5-SNAPSHOT",
   "ohnosequences" %% "aws-statika" % "1.0.1",
   "com.fasterxml.jackson.core" % "jackson-core" % "2.1.2",
   "com.fasterxml.jackson.core" % "jackson-databind" % "2.1.2"

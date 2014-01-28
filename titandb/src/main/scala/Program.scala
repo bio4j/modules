@@ -9,23 +9,6 @@ import java.io._
 import scala.collection.JavaConversions._
 import com.era7.bioinfo.bioinfoutil.Executable
 
-/* A abstract cover for importing program from bio4j-titandb */
-trait AnyImporterProgram {
-  def execute: InstallResults
-}
-
-abstract class ImporterProgram(val program: Executable, val args: Seq[String]) 
-  extends AnyImporterProgram {
-    def execute: InstallResults = {
-      try { 
-        program.execute(new java.util.ArrayList(args))
-        success(s"Data is imported")
-      } catch {
-        case e: Exception => failure(e.toString)
-      }
-    }
-}
-
 object Program {
 
   case class NCBITaxonomy(
