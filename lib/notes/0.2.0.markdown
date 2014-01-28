@@ -1,0 +1,2 @@
+* Separated abstract part of the project;
+* Changed a bit ImportedDataBundle - it requires initial db for import;
