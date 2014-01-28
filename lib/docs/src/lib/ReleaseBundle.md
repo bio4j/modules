@@ -5,6 +5,7 @@
   + [Bio4jInstanceBundle.scala](Bio4jInstanceBundle.md)
   + [DistributionBundle.scala](DistributionBundle.md)
   + [ImportedDataBundle.scala](ImportedDataBundle.md)
+  + [ImporterProgram.scala](ImporterProgram.md)
   + [ModuleBundle.scala](ModuleBundle.md)
   + [RawDataBundle.scala](RawDataBundle.md)
   + [ReleaseBundle.scala](ReleaseBundle.md)
@@ -62,6 +63,7 @@ abstract class ReleaseBundle[
       try { 
         val s3 = S3.create() // we rely on instance role credentials
         val loader = s3.createLoadingManager()
+        // TODO: controll public/private uploading (so far it's private)
         loader.uploadDirectory(s3address, module.dbLocation, recursively = true)
         success(s"Release ${name} was uploaded to ${s3address}")
       } catch {

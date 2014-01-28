@@ -4,6 +4,8 @@ name := "bio4j-scala-lib"
 
 description := "Abstract structure of bio4j-statika modules"
 
+organization := "ohnosequences"
+
 bucketSuffix := "era7.com"
 
 libraryDependencies ++= Seq(

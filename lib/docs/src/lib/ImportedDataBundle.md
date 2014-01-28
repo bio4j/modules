@@ -5,6 +5,7 @@
   + [Bio4jInstanceBundle.scala](Bio4jInstanceBundle.md)
   + [DistributionBundle.scala](DistributionBundle.md)
   + [ImportedDataBundle.scala](ImportedDataBundle.md)
+  + [ImporterProgram.scala](ImporterProgram.md)
   + [ModuleBundle.scala](ModuleBundle.md)
   + [RawDataBundle.scala](RawDataBundle.md)
   + [ReleaseBundle.scala](ReleaseBundle.md)
@@ -41,11 +42,18 @@ trait AnyImportedDataBundle extends AnyBio4jInstanceBundle {
   val  rawData: RawData
 ```
 
+- Where to import
+
+```scala
+  type InitDB <: AnyBio4jInstanceBundle
+  val  initDB: InitDB
+```
+
 - Dependencies on other importers
 
 ```scala
   type ImportedData <: TypeSet
-  val  importedData: ImportedData
+  val  importDeps: ImportedData
 
 }
 ```
@@ -55,22 +63,22 @@ Constructor:
 ```scala
 abstract class ImportedDataBundle[
   Rs <: TypeSet: boundedBy[AnyRawDataBundle]#is,
-  In <: AnyImportedDataBundle,                        // head
+  In <: AnyBio4jInstanceBundle,                       // head
   Is <: TypeSet: boundedBy[AnyImportedDataBundle]#is, // tail
   Ds <: TypeSet,
   Tw <: HList
-](val rawData: Rs = ∅, val importedData: In :~: Is)
+](val rawData: Rs = ∅, val initDB: In, val importDeps: Is = ∅)
  (implicit 
     union: UnionSets[Rs, In :~: Is]{ type Out = Ds },
     bound: ofBundles[Ds],
     tower: towerFor[Ds]#is[Tw]
- ) extends Bundle[Ds, Tw](union(rawData, importedData)) with AnyImportedDataBundle {
+ ) extends Bundle[Ds, Tw](union(rawData, initDB :~: importDeps)) with AnyImportedDataBundle {
 
     type RawData = Rs
-    type ImportedData = In :~: Is
+    type InitDB = In
+    type ImportedData = Is
 
-    // importedData set should non-empty for this: 
-    val dbLocation: File = importedData.head.dbLocation
+    val dbLocation: File = initDB.dbLocation
 
 }
 

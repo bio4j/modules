@@ -5,6 +5,7 @@
   + [Bio4jInstanceBundle.scala](Bio4jInstanceBundle.md)
   + [DistributionBundle.scala](DistributionBundle.md)
   + [ImportedDataBundle.scala](ImportedDataBundle.md)
+  + [ImporterProgram.scala](ImporterProgram.md)
   + [ModuleBundle.scala](ModuleBundle.md)
   + [RawDataBundle.scala](RawDataBundle.md)
   + [ReleaseBundle.scala](ReleaseBundle.md)
@@ -33,35 +34,43 @@ Abstract interface:
 
 ```scala
 trait AnyDistributionBundle extends AnyBio4jInstanceBundle {
+  type Release <: AnyReleaseBundle
+  val release: Release
+
   type API <: AnyAPIBundle
   val  api: API
 
-  def bio4jManager: Bio4jManager  
-  def nodeRetriever: NodeRetrieverTitan    
+  lazy val bio4jManager: Bio4jManager = new Bio4jManager(dbLocation.getAbsolutePath)
+  lazy val nodeRetriever: NodeRetrieverTitan = new NodeRetrieverTitan(bio4jManager)
 }
 ```
 
 Constructor:
 
 ```scala
-abstract class DistributionBundle[R <: AnyReleaseBundle](val release: R, val dbLocation: File)
+abstract class DistributionBundle[R <: AnyReleaseBundle](rel: R, destPrefix: File)
   extends Bundle() with AnyDistributionBundle {
+
+    type Release = R
+    val  release = rel
 
     type API = release.module.API
     val  api = release.module.api
 
-    def bio4jManager = new Bio4jManager(dbLocation.getAbsolutePath)
+    val dbLocation = new File(destPrefix, release.s3address.key) 
 
-    def nodeRetriever = new NodeRetrieverTitan(bio4jManager)
+    // def bio4jManager
+    // def nodeRetriever
 
     override def install[D <: AnyDistribution](d: D): InstallResults = {
       try { 
         val s3 = S3.create() // we rely on instance role credentials
         val loader = s3.createLoadingManager()
 
-        if (!dbLocation.exists) dbLocation.mkdirs
+        if (!destPrefix.exists) destPrefix.mkdirs
 
-        loader.downloadDirectory(release.s3address, dbLocation)
+        loader.downloadDirectory(release.s3address, destPrefix)
+
         success(s"Distribution ${name} was dowloaded to ${dbLocation} and initialized")
       } catch {
         case e: Exception => failure(e.toString)

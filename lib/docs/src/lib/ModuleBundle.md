@@ -5,6 +5,7 @@
   + [Bio4jInstanceBundle.scala](Bio4jInstanceBundle.md)
   + [DistributionBundle.scala](DistributionBundle.md)
   + [ImportedDataBundle.scala](ImportedDataBundle.md)
+  + [ImporterProgram.scala](ImporterProgram.md)
   + [ModuleBundle.scala](ModuleBundle.md)
   + [RawDataBundle.scala](RawDataBundle.md)
   + [ReleaseBundle.scala](ReleaseBundle.md)
