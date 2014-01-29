@@ -11,7 +11,7 @@ bucketSuffix := "era7.com"
 libraryDependencies ++= Seq(
   "ohnosequences" %% "statika" % "1.0.0",
   "ohnosequences" %% "aws-scala-tools" % "0.6.1",
-  "ohnosequences" % "bio4j-titandb" % "0.3.0"
+  "ohnosequences" % "bio4j-titandb" % "0.3.1"
 )
 
 dependencyOverrides ++= Set(
