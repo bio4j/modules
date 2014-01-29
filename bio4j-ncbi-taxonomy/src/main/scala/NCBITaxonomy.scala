@@ -71,8 +71,8 @@ case object NCBITaxonomyRelease extends ReleaseBundle(
   NCBITaxonomyModule
 )
 
-case object NCBITaxonomyReleaseDistribution extends AWSDistribution(
-  NCBITaxonomyMetadata,
-  amzn_ami_pv_64bit(Region.Ireland)(javaHeap = 6),
-  members = NCBITaxonomyRelease :~: ∅
+case object NCBITaxonomyDistribution extends DistributionBundle(
+  NCBITaxonomyRelease,
+  destPrefix = new File("/media/ephemeral0/")
 )
+
