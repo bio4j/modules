@@ -6,6 +6,8 @@ name := "bio4j-ncbi-taxonomy"
 
 description := "NCBI Taxonomy module of Bio4j"
 
+organization := "ohnosequences"
+
 bucketSuffix := "era7.com"
 
 
