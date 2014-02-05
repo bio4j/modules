@@ -17,7 +17,7 @@ object Bio4jDistribution {
     destPrefix = new File("/media/ephemeral0/")
   )
   case object GITaxonomyIndex extends DistributionBundle(
-    Bio4jRelease.GITaxonomyIndex,
+    IncrementalImporter.TaxIndexIncRelease,
     destPrefix = new File("/media/ephemeral0/")
   )
   case object GITaxonomyNodes extends DistributionBundle(
@@ -27,3 +27,32 @@ object Bio4jDistribution {
 
 } 
 
+object IncrementalImporter {
+
+  case object TaxIndexIncImporter extends ImportedDataBundle(
+    rawData = RawData.GITaxonomyIndex :~: ∅,
+    importedData = Bio4jDistribution.NCBITaxonomy :~: ∅
+  ) {
+    override def install[D <: AnyDistribution](d: D): InstallResults = {
+      Program.IndexNCBITaxonomyByGiId(
+        table = RawData.GITaxonomyIndex.inDataFolder("gi_taxid_nucl.dmp"),
+        db    = dbLocation
+      ).execute ->-
+      success(s"Data ${name} is imported to ${dbLocation}")
+    }
+  }
+
+  case object TaxIndexIncModule extends ModuleBundle(API.GITaxonomyIndex, TaxIndexIncImporter)
+
+  case object TaxIndexIncRelease extends ReleaseBundle(
+    ObjectAddress("my.nonexisting.bucket", "bio4j/indexed_taxonomy"), 
+    TaxIndexIncModule
+  )
+
+  case object Bio4jIncDist extends AWSDistribution(
+    metadata = new generated.metadata.Bio4jScalaDistribution(),
+    ami = Bio4jAMI(6),
+    members = TaxIndexIncRelease :~: ∅
+  )
+
+}

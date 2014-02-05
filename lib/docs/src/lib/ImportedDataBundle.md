@@ -1,36 +1,66 @@
-/* ### Bio4j module bundle
+### Index
+
++ scala
+  + [APIBundle.scala](APIBundle.md)
+  + [Bio4jInstanceBundle.scala](Bio4jInstanceBundle.md)
+  + [DistributionBundle.scala](DistributionBundle.md)
+  + [ImportedDataBundle.scala](ImportedDataBundle.md)
+  + [ImporterProgram.scala](ImporterProgram.md)
+  + [ModuleBundle.scala](ModuleBundle.md)
+  + [RawDataBundle.scala](RawDataBundle.md)
+  + [ReleaseBundle.scala](ReleaseBundle.md)
+
+------
+
+ ### Bio4j module bundle
 
 This bundle represents imported data of Bio4j DB. It's key feature is that it can depend on ohter 
 imported data bundles (and optionally on some raw data bundles), so that you can preserve the order
 of importing data and can easily create bundles which don't do anything by themselves, but combine 
 others.
-*/
 
+
+```scala
 package ohnosequences.bio4j.statika
 
 import shapeless._
 import ohnosequences.typesets._
 import ohnosequences.statika._
 import java.io.File
+```
 
-/* Abstract interface: */
+Abstract interface:
+
+```scala
 trait AnyImportedDataBundle extends AnyBio4jInstanceBundle {
+```
 
-  /* - What to import */
+- What to import
+
+```scala
   type RawData <: TypeSet
   val  rawData: RawData
+```
 
-  /* - Where to import */
+- Where to import
+
+```scala
   type InitDB <: AnyBio4jInstanceBundle
   val  initDB: InitDB
+```
 
-  /* - Dependencies on other importers */
+- Dependencies on other importers
+
+```scala
   type ImportedData <: TypeSet
   val  importDeps: ImportedData
 
 }
+```
 
-/* Constructor: */
+Constructor:
+
+```scala
 abstract class ImportedDataBundle[
   Rs <: TypeSet: boundedBy[AnyRawDataBundle]#is,
   In <: AnyBio4jInstanceBundle,                       // head
@@ -51,3 +81,6 @@ abstract class ImportedDataBundle[
     val dbLocation: File = initDB.dbLocation
 
 }
+
+```
+

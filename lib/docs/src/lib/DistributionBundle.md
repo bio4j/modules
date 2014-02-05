@@ -1,10 +1,25 @@
-/* ### Bio4j distribution
+### Index
+
++ scala
+  + [APIBundle.scala](APIBundle.md)
+  + [Bio4jInstanceBundle.scala](Bio4jInstanceBundle.md)
+  + [DistributionBundle.scala](DistributionBundle.md)
+  + [ImportedDataBundle.scala](ImportedDataBundle.md)
+  + [ImporterProgram.scala](ImporterProgram.md)
+  + [ModuleBundle.scala](ModuleBundle.md)
+  + [RawDataBundle.scala](RawDataBundle.md)
+  + [ReleaseBundle.scala](ReleaseBundle.md)
+
+------
+
+ ### Bio4j distribution
 
 This bundle represents the database instance, which was already built by applying a `ReleaseBundle`.
 So it is stored somewhere in S3 and this bundle downloads it, initializes TitanDB and provides the 
 corresponding abstract API.
-*/
 
+
+```scala
 package ohnosequences.bio4j.statika
 
 import shapeless._
@@ -13,8 +28,11 @@ import ohnosequences.statika._
 import ohnosequences.awstools.s3._
 import com.ohnosequences.bio4j.titan.model.util._
 import java.io.File
+```
 
-/* Abstract interface: */
+Abstract interface:
+
+```scala
 trait AnyDistributionBundle extends AnyBio4jInstanceBundle {
   type Release <: AnyReleaseBundle
   val release: Release
@@ -25,8 +43,11 @@ trait AnyDistributionBundle extends AnyBio4jInstanceBundle {
   lazy val bio4jManager: Bio4jManager = new Bio4jManager(dbLocation.getAbsolutePath)
   lazy val nodeRetriever: NodeRetrieverTitan = new NodeRetrieverTitan(bio4jManager)
 }
+```
 
-/* Constructor: */
+Constructor:
+
+```scala
 abstract class DistributionBundle[R <: AnyReleaseBundle](rel: R, destPrefix: File)
   extends Bundle() with AnyDistributionBundle {
 
@@ -57,3 +78,6 @@ abstract class DistributionBundle[R <: AnyReleaseBundle](rel: R, destPrefix: Fil
     }
 
 }
+
+```
+
