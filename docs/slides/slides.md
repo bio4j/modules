@@ -23,12 +23,12 @@
 ### Why we should split it
 
 - This code is just _hard_ to maintain
-- _Unrelated_ thing shouldn't be mixed all together
-- Modules should be really independent/_autonomous_
-  + Every module should have it's own procedure of _initialization_,
-    i.e of type definitions, that it needs for importing data
-  + Every module should have it's own _restricted API_,
-    which works only with those types
+- _Unrelated_ things shouldn't be mixed all together
+- Modules should be really _autonomous_  
+    + Every module should have it's own procedure of _initialization_,
+      i.e of type definitions, that it needs for importing data
+    + Every module should have it's own _restricted API_,
+      which works only with those types
 
 
 # Solution
