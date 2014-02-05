@@ -1,8 +1,8 @@
 Nice.scalaProject
 
-name := "bio4j-scala-lib"
+name := "bio4j-modules"
 
-description := "Abstract structure of bio4j-statika modules"
+description := "Abstract structure of Bio4j Statika modules"
 
 organization := "ohnosequences"
 
