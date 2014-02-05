@@ -12,12 +12,7 @@ import java.io._
 object Importer {
 
   /* This bundle is important, it doesn't really import anything, but initializes Bio4j */
-  case object InitialBio4j extends Bundle() with AnyImportedDataBundle {
-    type RawData = ∅
-    val  rawData = ∅
-    type ImportedData = ∅
-    val  importedData = ∅
-
+  case object InitialBio4j extends Bundle() with AnyBio4jInstanceBundle { //AnyImportedDataBundle {
     val dbLocation: File = new File("/media/ephemeral0/bio4jtitandb")
 
     override def install[D <: AnyDistribution](d: D): InstallResults = {
@@ -30,7 +25,7 @@ object Importer {
   /* ### NCBITaxonomy */
   case object NCBITaxonomy extends ImportedDataBundle(
     rawData = RawData.NCBITaxonomy :~: ∅,
-    importedData = InitialBio4j :~: ∅
+    initDB = InitialBio4j
   ) {
     override def install[D <: AnyDistribution](d: D): InstallResults = {
       Program.NCBITaxonomy(
@@ -47,7 +42,7 @@ object Importer {
   /* ### GITaxonomyIndex */
   case object GITaxonomyIndex extends ImportedDataBundle(
     rawData = RawData.GITaxonomyIndex :~: ∅,
-    importedData = NCBITaxonomy :~: ∅
+    initDB = NCBITaxonomy
   ) {
     override def install[D <: AnyDistribution](d: D): InstallResults = {
       Program.IndexNCBITaxonomyByGiId(
@@ -61,7 +56,7 @@ object Importer {
   /* ### RefSeq */
   case object RefSeq extends ImportedDataBundle(
     rawData = RawData.RefSeq :~: ∅,
-    importedData = InitialBio4j :~: ∅
+    initDB = InitialBio4j
   ) {
     override def install[D <: AnyDistribution](d: D): InstallResults = {
       Program.RefSeq(
@@ -75,7 +70,7 @@ object Importer {
   /* ### EnzymeDB */
   case object EnzymeDB extends ImportedDataBundle(
     rawData = RawData.EnzymeDB :~: ∅,
-    importedData = InitialBio4j :~: ∅
+    initDB = InitialBio4j
   ) {
     override def install[D <: AnyDistribution](d: D): InstallResults = {
       Program.EnzymeDB(
@@ -89,7 +84,7 @@ object Importer {
   /* ### GeneOntology */
   case object GeneOntology extends ImportedDataBundle(
     rawData = RawData.GeneOntology :~: ∅,
-    importedData = InitialBio4j :~: ∅
+    initDB = InitialBio4j
   ) {
     override def install[D <: AnyDistribution](d: D): InstallResults = {
       Program.GeneOntology(
@@ -103,7 +98,8 @@ object Importer {
   /* ### Uniprot */
   case object UniprotSwissProt extends ImportedDataBundle(
     rawData = RawData.UniprotSwissProt :~: ∅,
-    importedData = EnzymeDB :~: GeneOntology :~: ∅
+    initDB = EnzymeDB,
+    importDeps = GeneOntology :~: ∅
   ) {
     override def install[D <: AnyDistribution](d: D): InstallResults = {
       Program.Uniprot(
@@ -117,7 +113,8 @@ object Importer {
 
   case object UniprotTrEMBL extends ImportedDataBundle(
     rawData = RawData.UniprotTrEMBL :~: ∅,
-    importedData = EnzymeDB :~: GeneOntology :~: ∅
+    initDB = EnzymeDB,
+    importDeps = GeneOntology :~: ∅
   ) {
     override def install[D <: AnyDistribution](d: D): InstallResults = {
       Program.Uniprot(
@@ -131,14 +128,15 @@ object Importer {
 
   /* Both things together: */
   case object UniprotKB extends ImportedDataBundle(
-    importedData = UniprotSwissProt :~: UniprotTrEMBL :~: ∅
+    initDB = UniprotSwissProt,
+    importDeps = UniprotTrEMBL :~: ∅
   )
 
 
   /* ### UniRef */
   case object UniRef extends ImportedDataBundle(
     rawData = RawData.UniRef100 :~: RawData.UniRef90 :~: RawData.UniRef50 :~: ∅,
-    importedData = UniprotKB :~: ∅
+    initDB = UniprotKB
   ) {
     override def install[D <: AnyDistribution](d: D): InstallResults = {
       Program.UniRef(
@@ -154,7 +152,7 @@ object Importer {
   /* ### ProteinInteractions */
   case object ProteinInteractionsSwissProt extends ImportedDataBundle(
     rawData = RawData.UniprotSwissProt :~: ∅,
-    importedData = UniprotSwissProt :~: ∅
+    initDB = UniprotSwissProt
   ) {
     override def install[D <: AnyDistribution](d: D): InstallResults = {
       Program.ProteinInteractions(
@@ -167,7 +165,7 @@ object Importer {
 
   case object ProteinInteractionsTrEMBL extends ImportedDataBundle(
     rawData = RawData.UniprotTrEMBL :~: ∅,
-    importedData = UniprotTrEMBL :~: ∅
+    initDB = UniprotTrEMBL
   ) {
     override def install[D <: AnyDistribution](d: D): InstallResults = {
       Program.ProteinInteractions(
@@ -180,13 +178,14 @@ object Importer {
 
   /* Both things together: */
   case object ProteinInteractions extends ImportedDataBundle(
-    importedData = ProteinInteractionsSwissProt :~: ProteinInteractionsTrEMBL :~: ∅
+    initDB = ProteinInteractionsSwissProt,
+    importDeps = ProteinInteractionsTrEMBL :~: ∅
   )
 
   /* ### IsoformSequences */
   case object IsoformSequences extends ImportedDataBundle(
     rawData = RawData.UniprotSprotVarsplic :~: ∅,
-    importedData = UniprotKB :~: ∅
+    initDB = UniprotKB
   ) {
     override def install[D <: AnyDistribution](d: D): InstallResults = {
       Program.IsoformSequences(
@@ -200,8 +199,8 @@ object Importer {
 
   /* ### Everything together */
   case object FullBio4j extends ImportedDataBundle(
-    importedData =
-      NCBITaxonomy :~: 
+    initDB = NCBITaxonomy,
+    importDeps =
       GITaxonomyIndex :~: 
       RefSeq :~: 
       GeneOntology :~: 
