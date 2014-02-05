@@ -25,4 +25,4 @@ dependencyOverrides ++= Set(
 
 docsInputDir := baseDirectory.value + "/src/main/scala/"
 
-docsOutputDir := "docs/src/lib/"
+docsOutputDir := "docs/src/"
