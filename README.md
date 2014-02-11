@@ -1,9 +1,10 @@
 ## Bio4j Modules
 
-It is an abstract part of the [Statika](https://github.com/ohnosequences/statika)-based Bio4j module system.
+This is an abstract part of the [Statika](https://github.com/ohnosequences/statika)-based [Bio4j](https://github.com/bio4j/bio4j) module system.
 
 See [presentation](https://speakerdeck.com/ohnoseq/bio4j-plus-statika-managing-module-dependencies-on-the-type-level) about modularizing Bio4j with Statika.
 
+**Note:** This project is in active developement.
 
 ## Usage
 
