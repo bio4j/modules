@@ -1,17 +1,17 @@
 Nice.scalaProject
 
-name := "bio4j-modules"
+organization := "bio4j"
+
+name := "modules"
 
 description := "Abstract structure of Bio4j Statika modules"
-
-organization := "ohnosequences"
 
 bucketSuffix := "era7.com"
 
 libraryDependencies ++= Seq(
   "ohnosequences" %% "statika" % "1.0.0",
   "ohnosequences" %% "aws-scala-tools" % "0.6.1",
-  "ohnosequences" % "bio4j-titandb" % "0.3.1"
+  "bio4j" % "titandb" % "0.3.1"
 )
 
 dependencyOverrides ++= Set(
