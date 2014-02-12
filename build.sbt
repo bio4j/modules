@@ -1,10 +1,12 @@
+import ohnosequences.sbt._
+
 Nice.scalaProject
 
 organization := "bio4j"
 
 name := "modules"
 
-description := "Abstract structure of Bio4j Statika modules"
+// description := "Abstract structure of Bio4j Statika modules"
 
 bucketSuffix := "era7.com"
 
@@ -26,3 +28,17 @@ dependencyOverrides ++= Set(
 docsInputDir := baseDirectory.value + "/src/main/scala/"
 
 docsOutputDir := "docs/src/"
+
+credentials += Credentials("Foo realm", "foo.host.org", "usr", "pwd")
+
+lazy val foo = taskKey[S3Resolver => Resolver]("")
+
+foo := { s3resolver =>
+  val creds: S3Credentials = Credentials.forHost(credentials.value, s3resolver.url) match {
+    case Some(cs) => (cs.userName, cs.passwd)
+    case _ => sys.error("Failed to get credentials for "+s3resolver)
+  }
+  s3resolver.toSbtResolver(creds)
+}
+
+resolvers += foo.value(S3Resolver("Bar", "foo.host.org"))
