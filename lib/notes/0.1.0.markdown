@@ -1,6 +1,0 @@
-* Initial release;
-* Bio4j TitanDB with module system using statika bundles;
-* Organized everything into 3 sbt-subprojects: 
-  + lib - abstract part; 
-  + titandb - concrete part for titan; 
-  + dist - bio4j releases and distributions;

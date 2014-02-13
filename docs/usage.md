@@ -5,7 +5,7 @@ Now Bio4j is separated on modules with Statika and these modules are combinable 
 
 ### Making new modules
 
-As you can see in the [`ModuleBundle` source](src/lib/ModuleBundle.md), a Module is a statika bundle, which combines
+As you can see in the [`ModuleBundle` source](../src/lib/ModuleBundle.md), a Module is a statika bundle, which combines
 
 - an API bundle, which does nothing so far, but will represent the proper usage interface for this module;
 - an imported data bundle, which represents the real data imported into Bio4j that you can use.
