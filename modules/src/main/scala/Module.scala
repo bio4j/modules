@@ -8,19 +8,6 @@ import java.io._
 
 object Module {
 
-  case object NCBITaxonomy extends ModuleBundle(API.NCBITaxonomy, Importer.NCBITaxonomy)
-
-  case object GITaxonomyIndex extends ModuleBundle(API.GITaxonomyIndex, Importer.GITaxonomyIndex)
-
-  case object RefSeq extends ModuleBundle(API.RefSeq, Importer.RefSeq)
-
-  case object GeneOntology extends ModuleBundle(API.GeneOntology, Importer.GeneOntology)
-  case object EnzymeDB extends ModuleBundle(API.EnzymeDB, Importer.EnzymeDB)
-
-  case object UniprotSwissProt extends ModuleBundle(API.UniprotSwissProt, Importer.UniprotSwissProt)
-  case object UniprotTrEMBL    extends ModuleBundle(API.UniprotTrEMBL,    Importer.UniprotTrEMBL)
-  case object UniprotKB        extends ModuleBundle(API.UniprotKB,        Importer.UniprotKB)
-
   case object UniRef extends ModuleBundle(API.UniRef, Importer.UniRef)
 
   case object ProteinInteractionsSwissProt extends ModuleBundle(API.ProteinInteractionsSwissProt, Importer.ProteinInteractionsSwissProt)

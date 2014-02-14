@@ -43,11 +43,11 @@ Every module is an independent sbt-project in a separate repository:
 - [GI Taxonomy Index](https://github.com/bio4j/gi-taxonomy-index-module)
 - [RefSeq](https://github.com/bio4j/refseq-module) 
 - [Gene Ontology](https://github.com/bio4j/gene-ontology-module) 
+- [EnzymeDB](https://github.com/bio4j/enzymedb-module) 
+- [UniprotKB](https://github.com/bio4j/uniprotkb-module) 
 
 The code for the following modules is in the [`modules/`](modules/) directory and we work on separating them:
 
-- [EnzymeDB](https://github.com/bio4j/enzymedb-module) 
-- [UniprotKB](https://github.com/bio4j/uniprotkb-module) 
 - [UniRef](https://github.com/bio4j/uniref-module) 
 - [Protein Interactions](https://github.com/bio4j/protein-interactions-module) 
 - [Isoform Sequences](https://github.com/bio4j/isoform-sequences-module) 
